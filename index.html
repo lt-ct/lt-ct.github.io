@@ -11,10 +11,11 @@
 h1 {
     font-family: "Gasoek One", sans-serif;
     z-index: 10;
-    font-size: 72px;
+    font-size: clamp(56px, 12vw, 72px);
     font-weight: 400;
     color: black;
     text-align: center;
+    margin: 0.6em 0 0.3em;
 }
 h2 {
     font-family: "Gasoek One", sans-serif;
@@ -37,6 +38,15 @@ body {
     background-color: rgb(225, 225, 225);
 }
 
+/*
+  Flex-wrap keeps the buttons centered as a group regardless of how
+  many there are (unlike CSS grid with a fixed column count, which
+  reserves empty tracks for missing items and throws off centering).
+  Wrapping to a new row happens naturally once items no longer fit,
+  and because the media query below flips button size + container
+  width together at 800px, there's no in-between zone where 2 buttons
+  end up sharing a row — it's always 3 or 1.
+*/
 .grid {
   display: flex;
   flex-wrap: wrap;
@@ -52,9 +62,16 @@ body {
   text-decoration: none;
 }
 
+/*
+  Every button is a square. Width uses clamp() so it scales down
+  smoothly as the viewport narrows (down to a sensible floor) while
+  never exceeding its max size on big screens. To add a new button,
+  copy an <a><button class="button">...</button></a> block below —
+  no other changes needed, the flex layout handles positioning.
+*/
 .button {
-  width: 195px;
-  height: 195px;
+  width: clamp(140px, 18vw, 195px);
+  aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,7 +89,10 @@ body {
   object-fit: contain;
 }
 
-/*Basic "scheduler" look: a few horizontal lines standing in for a planner grid, with the label sitting on top of them.*/
+/*
+  Basic "scheduler" look: a few horizontal lines standing in for
+  a planner grid, with the label sitting on top of them.
+*/
 .scheduler-button {
   position: relative;
   background-color: white;
@@ -109,25 +129,40 @@ body {
   line-height: 1.3;
 }
 
+/*
+  Plain white box with centered text — used for buttons that
+  don't have their own icon/graphic yet.
+*/
 .plain-button {
   background-color: white;
   border: 3px solid black;
 }
 
-@media (max-width: 600px) {
+/*
+  Below this width there isn't room for 3 columns without them
+  getting cramped, so we snap straight to 1 column and scale
+  everything up a bit for a better mobile feel.
+*/
+@media (max-width: 800px) {
   .grid {
-    gap: 25px;
+    gap: 30px;
     padding: 30px 35px;
   }
 
   .button {
-    width: 165px;
-    height: 165px;
+    width: clamp(190px, 65vw, 260px);
   }
 
-  h1 {
-    font-size: 56px;
-    margin-top: 5vh;
+  .scheduler-text {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  h3 {
+    font-size: 18px;
   }
 }
 </style>
