@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>LT-CT</title>
+<link rel="icon" href="./tot.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Gasoek+One&family=SN+Pro:wght@200..900&display=swap" rel="stylesheet">
+<style>
+h1 {
+    font-family: "Gasoek One", sans-serif;
+    z-index: 10;
+    font-size: 72px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
+}
+h2 {
+    font-family: "Gasoek One", sans-serif;
+    z-index: 10;
+    font-size: 40px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
+}
+h3 {
+    font-family: "Gasoek One", sans-serif;
+    z-index: 10;
+    font-size: 20px;
+    font-weight: 400;
+    color: black;
+    text-align: center;
+}
+
+body {
+    background-color: rgb(225, 225, 225);
+}
+
+/*
+  Flex-wrap keeps the buttons centered as a group and lets them
+  wrap onto new rows as the screen narrows, instead of shrinking
+  or overflowing. Padding here is what keeps them off the screen
+  edges, and it shrinks a bit on small screens in the media query
+  below.
+*/
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 55px;
+  padding: 65px 90px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.grid a {
+  text-decoration: none;
+}
+
+/*
+  Every button is a fixed-size square. To add a new one, copy an
+  <a><button class="button"><img ...></button></a> block below —
+  no other changes needed, the grid handles layout automatically.
+*/
+.button {
+  width: 195px;
+  height: 195px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Pixelify Sans", sans-serif;
+  color: black;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.button img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/*
+  Basic "scheduler" look: a few horizontal lines standing in for
+  a planner grid, with the label sitting on top of them.
+*/
+.scheduler-button {
+  position: relative;
+  background-color: white;
+  border: 3px solid black;
+  overflow: hidden;
+}
+
+.scheduler-lines {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 18px 0;
+}
+
+.scheduler-lines span {
+  display: block;
+  height: 3px;
+  margin: 0 18px;
+  background-color: #ccc;
+}
+
+.scheduler-text {
+  position: relative;
+  z-index: 2;
+  font-family: "SN Pro", sans-serif;
+  text-transform: lowercase;
+  font-weight: bold;
+  font-size: 21px;
+  color: black;
+  text-align: center;
+  padding: 0 12px;
+  line-height: 1.3;
+}
+
+/*
+  Plain white box with centered text — used for buttons that
+  don't have their own icon/graphic yet.
+*/
+.plain-button {
+  background-color: white;
+  border: 3px solid black;
+}
+
+@media (max-width: 600px) {
+  .grid {
+    gap: 25px;
+    padding: 30px 35px;
+  }
+
+  .button {
+    width: 165px;
+    height: 165px;
+  }
+
+  h1 {
+    font-size: 56px;
+    margin-top: 5vh;
+  }
+}
+</style>
+</head>
+
+<body>
+    <h1>LT-CT</h1>
+    <div class="grid">
+      <!--<a href="#">
+        <button class="button plain-button">
+          <span class="scheduler-text">coming soon</span>
+        </button>
+      </a>-->
+      <a href="scheduler.html">
+        <button class="button scheduler-button">
+          <div class="scheduler-lines">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <span class="scheduler-text">school<br>scheduler</span>
+        </button>
+      </a>
+      <!--<a href="#">
+        <button class="button plain-button">
+          <span class="scheduler-text">coming soon</span>
+        </button>
+      </a>-->
+    </div>
+</body>
+
+</html>

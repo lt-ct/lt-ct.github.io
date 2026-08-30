@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weekly Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=SN+Pro:wght@200..900&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; width: 100%; height: 100%; overflow: hidden; }
+body { font-family: "SN Pro", sans-serif; background: #f5f5f5; color: #222; }
+
+/* Calendar */
+.calendar { width: 95%; max-width: 1200px; height: calc(100vh - 90px); margin: 15px auto 75px; background: #fff; border: 1px solid #ddd; border-radius: 10px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.08); }
+.header { display: grid; grid-template-columns: 115px repeat(5, 1fr); height: 48px; background: #eee; border-bottom: 1px solid #ccc; }
+.header div { display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px; border-right: 1px solid #ddd; text-transform: lowercase; }
+.header div:last-child { border-right: none; }
+
+/* Schedule grid: 10 hours x 4 quarter-hour rows = 40 rows */
+.schedule { position: relative; display: grid; grid-template-columns: 115px repeat(5, 1fr); grid-template-rows: repeat(40, 1fr); height: calc(100% - 48px); }
+
+.time { position: relative; border-right: 1px solid #ddd; border-bottom: 1px solid #eee; min-height: 0; }
+.time.hour { border-top: 1px solid #c9c9c9; }
+.time.hour span { position: absolute; right: 9px; top: 0; transform: translateY(-50%); font-size: 12px; color: #777; white-space: nowrap; background: #fff; padding: 0 2px; z-index: 3; text-transform: lowercase; }
+
+.slot { position: relative; min-height: 0; border-right: 1px solid #ddd; border-bottom: 1px solid #eee; }
+.slot.hour-start { border-top: 1px solid #c9c9c9; }
+.slot:last-child { border-right: none; }
+.slot:hover { background: #fafafa; }
+
+/* Current-time indicator */
+.now-line { position: absolute; left: 0; right: 0; height: 0; border-top: 2px solid #e63946; z-index: 6; pointer-events: none; display: none; }
+.now-line::before { content: ""; position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border-radius: 50%; background: #e63946; }
+
+/* Events */
+.event { position: absolute; left: 3px; right: 3px; top: 2px; padding: 5px 24px 5px 7px; border-radius: 5px; color: #222; font-size: 11px; overflow: hidden; z-index: 5; box-shadow: 0 1px 3px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.08); }
+.event strong { display: block; margin-bottom: 1px; font-size: 12px; }
+.event .event-location { display: block; font-size: 10px; text-transform: lowercase; opacity: 0.75; margin-bottom: 1px; }
+.event button { position: absolute; right: 4px; top: 3px; width: 18px; height: 18px; padding: 0; border: none; background: transparent; color: #333; cursor: pointer; font-size: 14px; line-height: 18px; }
+.event button:hover { opacity: 0.55; }
+
+/* Add button + mobile day dots */
+.add-container { position: fixed; bottom: 15px; left: 0; right: 0; text-align: center; z-index: 20; }
+.day-dots { display: none; justify-content: center; gap: 8px; margin-bottom: 10px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; }
+.dot.active { background: #222; }
+#addEventButton { border: none; background: #222; color: #fff; padding: 11px 23px; border-radius: 7px; font-size: 14px; cursor: pointer; box-shadow: 0 3px 10px rgba(0,0,0,0.15); text-transform: lowercase; font-family: "SN Pro", sans-serif; }
+#addEventButton:hover { background: #444; }
+
+/* Modal */
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); align-items: center; justify-content: center; z-index: 100; }
+.modal-content { width: 360px; background: #fff; padding: 23px; border-radius: 10px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); }
+.modal-content h2 { margin: 0 0 18px 0; text-transform: lowercase; }
+.form-group { margin-bottom: 13px; }
+.form-group label { display: block; margin-bottom: 5px; font-size: 13px; font-weight: bold; text-transform: lowercase; }
+.form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; font-size: 14px; background: #fff; font-family: "SN Pro", sans-serif; }
+.form-group select, .form-group select option { text-transform: lowercase; }
+
+/* Color swatches */
+.color-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; }
+.color-swatch { position: relative; width: 100%; aspect-ratio: 1 / 1; border-radius: 6px; cursor: pointer; border: 2px solid transparent; outline: 1px solid rgba(0,0,0,0.15); outline-offset: -1px; }
+.color-swatch:hover { filter: brightness(1.05); }
+.color-swatch.selected { border-color: #4f7cff; box-shadow: 0 0 0 2px white inset; }
+.color-swatch.selected::after { content: "✓"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: bold; color: #222; text-shadow: 0 0 2px #fff, 0 0 2px #fff; }
+.color-swatch.automatic { grid-column: 1 / -1; width: 100%; height: 30px; aspect-ratio: auto; margin: 0 auto 3px; background: linear-gradient(90deg, #ffc7c7, #ffd4b8, #fff0ad, #c9efc9, #bceeee, #c8dcff, #dec8ff); }
+.color-swatch.automatic::before { content: "Automatic"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #222; background: rgba(255,255,255,0.6); border-radius: 4px; text-transform: lowercase; font-family: "SN Pro", sans-serif; }
+.color-swatch.automatic.selected::before { background: rgba(255,255,255,0.35); }
+.color-swatch.automatic.selected::after { content: ""; }
+
+.modal-buttons { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+.modal-buttons button { padding: 8px 14px; border: none; border-radius: 5px; cursor: pointer; text-transform: lowercase; font-family: "SN Pro", sans-serif; }
+#cancelButton { background: #ddd; }
+#saveButton { background: #4f7cff; color: #fff; }
+
+/* Mobile: one day fills the screen, swipeable, with page dots */
+@media (max-width: 700px) {
+  .calendar { width: calc(100% - 16px); margin: 15px 8px 100px; }
+  .header, .schedule { grid-template-columns: 55px 1fr; }
+  .day-dots { display: flex; }
+}
+</style>
+</head>
+<body>
+
+<div class="calendar" id="calendar">
+  <div class="header" id="header">
+    <div></div>
+    <div data-day="0">Monday</div>
+    <div data-day="1">Tuesday</div>
+    <div data-day="2">Wednesday</div>
+    <div data-day="3">Thursday</div>
+    <div data-day="4">Friday</div>
+  </div>
+  <div class="schedule" id="schedule">
+    <div class="now-line" id="nowLine"></div>
+  </div>
+</div>
+
+<div class="add-container">
+  <div class="day-dots" id="dayDots"></div>
+  <button id="addEventButton">＋ Add Class</button>
+</div>
+
+<div class="modal" id="eventModal">
+  <div class="modal-content">
+    <h2>Add Class</h2>
+    <div class="form-group">
+      <label>Class Name</label>
+      <input type="text" id="eventName" placeholder="e.g. calculus I">
+    </div>
+    <div class="form-group">
+      <label>Location</label>
+      <input type="text" id="eventLocation" placeholder="e.g. room 204">
+    </div>
+    <div class="form-group">
+      <label>Color</label>
+      <div class="color-grid" id="eventColorGrid">
+        <div class="color-swatch automatic selected" data-color="automatic" title="Automatic"></div>
+        <div class="color-swatch" data-color="#ffc7c7" title="Pastel Red" style="background-color:#ffc7c7;"></div>
+        <div class="color-swatch" data-color="#ffd4b8" title="Pastel Orange" style="background-color:#ffd4b8;"></div>
+        <div class="color-swatch" data-color="#fff0ad" title="Pastel Yellow" style="background-color:#fff0ad;"></div>
+        <div class="color-swatch" data-color="#c9efc9" title="Pastel Green" style="background-color:#c9efc9;"></div>
+        <div class="color-swatch" data-color="#bceeee" title="Pastel Cyan" style="background-color:#bceeee;"></div>
+        <div class="color-swatch" data-color="#c8dcff" title="Pastel Blue" style="background-color:#c8dcff;"></div>
+        <div class="color-swatch" data-color="#dec8ff" title="Pastel Purple" style="background-color:#dec8ff;"></div>
+        <div class="color-swatch" data-color="#b76b6b" title="Dark Red" style="background-color:#b76b6b;"></div>
+        <div class="color-swatch" data-color="#b78362" title="Dark Orange" style="background-color:#b78362;"></div>
+        <div class="color-swatch" data-color="#aaa05e" title="Dark Yellow" style="background-color:#aaa05e;"></div>
+        <div class="color-swatch" data-color="#6f9b6f" title="Dark Green" style="background-color:#6f9b6f;"></div>
+        <div class="color-swatch" data-color="#5f9696" title="Dark Cyan" style="background-color:#5f9696;"></div>
+        <div class="color-swatch" data-color="#667fa8" title="Dark Blue" style="background-color:#667fa8;"></div>
+        <div class="color-swatch" data-color="#8069a3" title="Dark Purple" style="background-color:#8069a3;"></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Day</label>
+      <select id="eventDay">
+        <option value="0">Monday</option>
+        <option value="1">Tuesday</option>
+        <option value="2">Wednesday</option>
+        <option value="3">Thursday</option>
+        <option value="4">Friday</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Start Time</label>
+      <select id="eventTime"></select>
+    </div>
+    <div class="form-group">
+      <label>Duration (minutes)</label>
+      <input type="number" id="eventDuration" min="15" step="15" value="60">
+    </div>
+    <div class="modal-buttons">
+      <button id="cancelButton">Cancel</button>
+      <button id="saveButton">Add Class</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const calendarEl = document.getElementById("calendar");
+const schedule = document.getElementById("schedule");
+const nowLine = document.getElementById("nowLine");
+const modal = document.getElementById("eventModal");
+const eventName = document.getElementById("eventName");
+const eventLocation = document.getElementById("eventLocation");
+const eventDay = document.getElementById("eventDay");
+const eventTime = document.getElementById("eventTime");
+const eventDuration = document.getElementById("eventDuration");
+const eventColorGrid = document.getElementById("eventColorGrid");
+const dayDots = document.getElementById("dayDots");
+
+const startHour = 8, endHour = 18;
+const automaticColors = ["#ffc7c7","#ffd4b8","#fff0ad","#c9efc9","#bceeee","#c8dcff","#dec8ff","#b76b6b","#b78362","#aaa05e","#6f9b6f","#5f9696","#667fa8","#8069a3"];
+let classColors = {};
+let selectedColor = "automatic";
+
+// Weekday index for the mobile single-day view (0=Mon..4=Fri). Weekends default to Monday.
+const jsDay = new Date().getDay();
+let currentDay = (jsDay === 0 || jsDay === 6) ? 0 : jsDay - 1;
+
+const dayNames = ["Mon","Tue","Wed","Thu","Fri"];
+dayNames.forEach(() => {
+  const d = document.createElement("div");
+  d.className = "dot";
+  dayDots.appendChild(d);
+});
+
+function isMobileView() {
+  return window.matchMedia("(max-width: 700px)").matches;
+}
+
+function updateDots() {
+  dayDots.querySelectorAll(".dot").forEach((d, i) => d.classList.toggle("active", i === currentDay));
+}
+
+function updateDayVisibility() {
+  const mobile = isMobileView();
+  document.querySelectorAll("[data-day]").forEach(el => {
+    const d = parseInt(el.dataset.day);
+    el.style.display = (mobile && d !== currentDay) ? "none" : "";
+  });
+  updateDots();
+  resizeEvents();
+  updateNowLine();
+}
+
+// Build the 40-row schedule grid
+for (let hour = startHour; hour < endHour; hour++) {
+  for (let quarter = 0; quarter < 4; quarter++) {
+    const time = document.createElement("div");
+    time.className = "time" + (quarter === 0 ? " hour" : "");
+    if (quarter === 0) {
+      const label = document.createElement("span");
+      label.textContent = formatTime(hour * 60);
+      time.appendChild(label);
+    }
+    schedule.appendChild(time);
+
+    for (let day = 0; day < 5; day++) {
+      const slot = document.createElement("div");
+      slot.className = "slot" + (quarter === 0 ? " hour-start" : "");
+      slot.dataset.day = day;
+      slot.dataset.hour = hour;
+      slot.dataset.quarter = quarter;
+      schedule.appendChild(slot);
+    }
+  }
+}
+schedule.appendChild(nowLine);
+
+// Start-time dropdown
+for (let hour = startHour; hour < endHour; hour++) {
+  for (let quarter = 0; quarter < 4; quarter++) {
+    const minutes = hour * 60 + quarter * 15;
+    const option = document.createElement("option");
+    option.value = minutes;
+    option.textContent = formatTime(minutes);
+    eventTime.appendChild(option);
+  }
+}
+
+function getAutomaticColor(name) {
+  if (classColors[name]) return classColors[name];
+  const used = Object.values(classColors);
+  const available = automaticColors.filter(c => !used.includes(c));
+  const pool = available.length ? available : automaticColors;
+  const color = pool[Math.floor(Math.random() * pool.length)];
+  classColors[name] = color;
+  return color;
+}
+
+function rowHeight() {
+  return schedule.getBoundingClientRect().height / 40;
+}
+
+function eventHeight(duration) {
+  return (duration / 15) * rowHeight() - 5;
+}
+
+function createEvent(name, day, startMinutes, durationMinutes, color, location) {
+  const hour = Math.floor(startMinutes / 60);
+  const quarter = (startMinutes % 60) / 15;
+  const slot = document.querySelector(`.slot[data-day="${day}"][data-hour="${hour}"][data-quarter="${quarter}"]`);
+  if (!slot) return;
+
+  if (!color) color = getAutomaticColor(name);
+
+  const event = document.createElement("div");
+  event.className = "event";
+  event.dataset.name = name;
+  event.dataset.day = day;
+  event.dataset.start = startMinutes;
+  event.dataset.duration = durationMinutes;
+  event.dataset.color = color;
+  event.dataset.location = location || "";
+  event.style.backgroundColor = color;
+  event.style.height = eventHeight(durationMinutes) + "px";
+
+  const locationHTML = location ? `<span class="event-location">${escapeHTML(location)}</span>` : "";
+  event.innerHTML = `<strong>${escapeHTML(name)}</strong>${locationHTML}${formatTime(startMinutes)} - ${formatTime(startMinutes + durationMinutes)}<button>×</button>`;
+
+  event.querySelector("button").onclick = () => {
+    event.remove();
+    saveEvents();
+    cleanupUnusedColors();
+  };
+
+  slot.appendChild(event);
+}
+
+function saveEvents() {
+  const events = [];
+  document.querySelectorAll(".event").forEach(event => {
+    events.push({
+      name: event.dataset.name,
+      location: event.dataset.location,
+      day: parseInt(event.dataset.day),
+      start: parseInt(event.dataset.start),
+      duration: parseInt(event.dataset.duration),
+      color: event.dataset.color
+    });
+  });
+  const saveData = { events, classColors };
+  document.cookie = "calendarData=" + encodeURIComponent(JSON.stringify(saveData)) + "; max-age=" + (60 * 60 * 24 * 365) + "; path=/";
+}
+
+function loadEvents() {
+  const cookie = document.cookie.split(";").find(c => c.trim().startsWith("calendarData="));
+  if (!cookie) return;
+  try {
+    const data = JSON.parse(decodeURIComponent(cookie.trim().substring("calendarData=".length)));
+    if (data.classColors) classColors = data.classColors;
+    if (data.events) data.events.forEach(e => createEvent(e.name, e.day, e.start, e.duration, e.color, e.location));
+  } catch (error) {
+    console.error("Could not load calendar:", error);
+  }
+}
+
+function cleanupUnusedColors() {
+  const namesInUse = new Set();
+  document.querySelectorAll(".event").forEach(e => namesInUse.add(e.dataset.name));
+  Object.keys(classColors).forEach(name => { if (!namesInUse.has(name)) delete classColors[name]; });
+  saveEvents();
+}
+
+function selectSwatch(color) {
+  selectedColor = color;
+  eventColorGrid.querySelectorAll(".color-swatch").forEach(s => s.classList.toggle("selected", s.dataset.color === color));
+}
+eventColorGrid.querySelectorAll(".color-swatch").forEach(s => { s.onclick = () => selectSwatch(s.dataset.color); });
+
+function resetModalForm() {
+  eventName.value = "";
+  eventLocation.value = "";
+  eventDuration.value = "60";
+  selectSwatch("automatic");
+}
+
+function resetModalFormFull() {
+  resetModalForm();
+  eventDay.selectedIndex = 0;
+  eventTime.selectedIndex = 0;
+}
+
+document.getElementById("saveButton").onclick = () => {
+  const name = eventName.value.trim();
+  if (!name) { alert("Please enter a class name."); return; }
+
+  const location = eventLocation.value.trim();
+  const day = parseInt(eventDay.value);
+  const startMinutes = parseInt(eventTime.value);
+  const durationMinutes = parseInt(eventDuration.value);
+
+  if (isNaN(durationMinutes) || durationMinutes <= 0) { alert("Please enter a valid duration."); return; }
+  if (durationMinutes % 15 !== 0) { alert("Duration must be a multiple of 15 minutes."); return; }
+  if (startMinutes + durationMinutes > endHour * 60) { alert("The class cannot extend past 6:00 PM."); return; }
+
+  let color;
+  if (selectedColor === "automatic") {
+    color = getAutomaticColor(name);
+  } else {
+    color = selectedColor;
+    classColors[name] = color;
+  }
+
+  createEvent(name, day, startMinutes, durationMinutes, color, location);
+  saveEvents();
+  resetModalForm();
+  modal.style.display = "none";
+};
+
+document.getElementById("addEventButton").onclick = () => { modal.style.display = "flex"; };
+document.getElementById("cancelButton").onclick = () => {
+  resetModalFormFull();
+  modal.style.display = "none";
+};
+
+function formatTime(totalMinutes) {
+  const hour = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  let displayHour = hour % 12;
+  if (displayHour === 0) displayHour = 12;
+  const minuteText = minutes.toString().padStart(2, "0");
+  const suffix = hour >= 12 ? "PM" : "AM";
+  return `${displayHour}:${minuteText} ${suffix}`;
+}
+
+function escapeHTML(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+function resizeEvents() {
+  document.querySelectorAll(".event").forEach(event => {
+    event.style.height = eventHeight(parseInt(event.dataset.duration)) + "px";
+  });
+}
+
+function updateNowLine() {
+  const now = new Date();
+  const mins = now.getHours() * 60 + now.getMinutes();
+  const startMin = startHour * 60, endMin = endHour * 60;
+  if (mins < startMin || mins > endMin) { nowLine.style.display = "none"; return; }
+  nowLine.style.display = "block";
+  nowLine.style.top = ((mins - startMin) / (endMin - startMin)) * schedule.getBoundingClientRect().height + "px";
+}
+setInterval(updateNowLine, 30000);
+
+// Swipe between days on mobile
+let touchStartX = null;
+calendarEl.addEventListener("touchstart", e => { touchStartX = e.touches[0].clientX; });
+calendarEl.addEventListener("touchend", e => {
+  if (touchStartX === null) return;
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0 && currentDay < 4) currentDay++;
+    else if (dx > 0 && currentDay > 0) currentDay--;
+    updateDayVisibility();
+  }
+  touchStartX = null;
+});
+
+window.addEventListener("resize", updateDayVisibility);
+
+loadEvents();
+updateDayVisibility();
+</script>
+</body>
+</html>
