@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Weekly Schedule</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,6 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=SN+Pro:wght@200..900&display=swap" rel="stylesheet">
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -28,7 +30,11 @@ body {
   color: #222;
 }
 
-/* Calendar */
+
+/* =========================================================
+   CALENDAR
+   ========================================================= */
+
 .calendar {
   width: 95%;
   max-width: 1200px;
@@ -41,8 +47,12 @@ body {
   box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* Header */
-.header {
+
+/* =========================================================
+   DESKTOP HEADER
+   ========================================================= */
+
+.desktop-header {
   display: grid;
   grid-template-columns: 115px repeat(5, 1fr);
   height: 48px;
@@ -50,7 +60,7 @@ body {
   border-bottom: 1px solid #ccc;
 }
 
-.header > div {
+.desktop-header div {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,12 +70,16 @@ body {
   text-transform: lowercase;
 }
 
-.header > div:last-child {
+.desktop-header div:last-child {
   border-right: none;
 }
 
-/* Schedule */
-.schedule {
+
+/* =========================================================
+   DESKTOP SCHEDULE
+   ========================================================= */
+
+.desktop-schedule {
   position: relative;
   display: grid;
   grid-template-columns: 115px repeat(5, 1fr);
@@ -98,61 +112,54 @@ body {
   text-transform: lowercase;
 }
 
-.slot {
+.desktop-slot {
   position: relative;
   min-height: 0;
   border-right: 1px solid #ddd;
   border-bottom: 1px solid #eee;
 }
 
-.slot.hour-start {
+.desktop-slot.hour-start {
   border-top: 1px solid #c9c9c9;
 }
 
-.slot:last-child {
-  border-right: none;
-}
-
-.slot:hover {
+.desktop-slot:hover {
   background: #fafafa;
 }
 
-/* Current-time indicator */
-.now-line {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 0;
-  border-top: 2px solid #e63946;
-  z-index: 6;
-  pointer-events: none;
+
+/* =========================================================
+   MOBILE CALENDAR
+   ========================================================= */
+
+.mobile-calendar {
   display: none;
 }
 
-.now-line::before {
-  content: "";
-  position: absolute;
-  left: -4px;
-  top: -4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #e63946;
-}
 
-/* Events */
+/* =========================================================
+   EVENTS
+   ========================================================= */
+
 .event {
   position: absolute;
   left: 3px;
   right: 3px;
   top: 2px;
+
   padding: 5px 24px 5px 7px;
+
   border-radius: 5px;
+
   color: #222;
   font-size: 11px;
+
   overflow: hidden;
+
   z-index: 5;
+
   box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+
   border: 1px solid rgba(0,0,0,0.08);
 }
 
@@ -174,13 +181,19 @@ body {
   position: absolute;
   right: 4px;
   top: 3px;
+
   width: 18px;
   height: 18px;
+
   padding: 0;
+
   border: none;
   background: transparent;
+
   color: #333;
+
   cursor: pointer;
+
   font-size: 14px;
   line-height: 18px;
 }
@@ -189,27 +202,77 @@ body {
   opacity: 0.55;
 }
 
-/* Add button + mobile day dots */
+
+/* =========================================================
+   CURRENT TIME
+   ========================================================= */
+
+.now-line {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 0;
+
+  border-top: 2px solid #e63946;
+
+  z-index: 20;
+
+  pointer-events: none;
+
+  display: none;
+}
+
+.now-line::before {
+  content: "";
+
+  position: absolute;
+
+  left: -4px;
+  top: -4px;
+
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+
+  background: #e63946;
+}
+
+
+/* =========================================================
+   ADD BUTTON
+   ========================================================= */
+
 .add-container {
   position: fixed;
+
   bottom: 15px;
   left: 0;
   right: 0;
+
   text-align: center;
-  z-index: 20;
+
+  z-index: 50;
 }
 
 .day-dots {
   display: none;
+
   justify-content: center;
+
   gap: 8px;
+
   margin-bottom: 10px;
 }
 
 .dot {
   width: 8px;
   height: 8px;
+
   border-radius: 50%;
+
   background: #ccc;
 }
 
@@ -219,14 +282,22 @@ body {
 
 #addEventButton {
   border: none;
+
   background: #222;
   color: #fff;
+
   padding: 11px 23px;
+
   border-radius: 7px;
+
   font-size: 14px;
+
   cursor: pointer;
+
   box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+
   text-transform: lowercase;
+
   font-family: "SN Pro", sans-serif;
 }
 
@@ -234,27 +305,41 @@ body {
   background: #444;
 }
 
-/* Modal */
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
 .modal {
   display: none;
+
   position: fixed;
+
   inset: 0;
+
   background: rgba(0,0,0,0.45);
+
   align-items: center;
   justify-content: center;
+
   z-index: 100;
 }
 
 .modal-content {
   width: 360px;
+
   background: #fff;
+
   padding: 23px;
+
   border-radius: 10px;
+
   box-shadow: 0 5px 25px rgba(0,0,0,0.2);
 }
 
 .modal-content h2 {
   margin: 0 0 18px 0;
+
   text-transform: lowercase;
 }
 
@@ -264,20 +349,30 @@ body {
 
 .form-group label {
   display: block;
+
   margin-bottom: 5px;
+
   font-size: 13px;
+
   font-weight: bold;
+
   text-transform: lowercase;
 }
 
 .form-group input,
 .form-group select {
   width: 100%;
+
   padding: 8px;
+
   border: 1px solid #ccc;
+
   border-radius: 5px;
+
   font-size: 14px;
+
   background: #fff;
+
   font-family: "SN Pro", sans-serif;
 }
 
@@ -286,21 +381,34 @@ body {
   text-transform: lowercase;
 }
 
-/* Color swatches */
+
+/* =========================================================
+   COLOR SWATCHES
+   ========================================================= */
+
 .color-grid {
   display: grid;
+
   grid-template-columns: repeat(7, 1fr);
+
   gap: 7px;
 }
 
 .color-swatch {
   position: relative;
+
   width: 100%;
+
   aspect-ratio: 1 / 1;
+
   border-radius: 6px;
+
   cursor: pointer;
+
   border: 2px solid transparent;
+
   outline: 1px solid rgba(0,0,0,0.15);
+
   outline-offset: -1px;
 }
 
@@ -310,53 +418,81 @@ body {
 
 .color-swatch.selected {
   border-color: #4f7cff;
+
   box-shadow: 0 0 0 2px white inset;
 }
 
 .color-swatch.selected::after {
   content: "✓";
+
   position: absolute;
+
   inset: 0;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-size: 13px;
+
   font-weight: bold;
+
   color: #222;
-  text-shadow: 0 0 2px #fff, 0 0 2px #fff;
+
+  text-shadow:
+    0 0 2px #fff,
+    0 0 2px #fff;
 }
 
 .color-swatch.automatic {
   grid-column: 1 / -1;
+
   width: 100%;
+
   height: 30px;
+
   aspect-ratio: auto;
+
   margin: 0 auto 3px;
-  background: linear-gradient(
-    90deg,
-    #ffc7c7,
-    #ffd4b8,
-    #fff0ad,
-    #c9efc9,
-    #bceeee,
-    #c8dcff,
-    #dec8ff
-  );
+
+  background:
+    linear-gradient(
+      90deg,
+      #ffc7c7,
+      #ffd4b8,
+      #fff0ad,
+      #c9efc9,
+      #bceeee,
+      #c8dcff,
+      #dec8ff
+    );
 }
 
 .color-swatch.automatic::before {
   content: "Automatic";
+
   position: absolute;
+
   inset: 0;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-size: 12px;
+
   font-weight: bold;
+
   color: #222;
+
   background: rgba(255,255,255,0.6);
+
   border-radius: 4px;
+
   text-transform: lowercase;
+
   font-family: "SN Pro", sans-serif;
 }
 
@@ -368,19 +504,32 @@ body {
   content: "";
 }
 
+
+/* =========================================================
+   MODAL BUTTONS
+   ========================================================= */
+
 .modal-buttons {
   display: flex;
+
   gap: 10px;
+
   justify-content: flex-end;
+
   margin-top: 18px;
 }
 
 .modal-buttons button {
   padding: 8px 14px;
+
   border: none;
+
   border-radius: 5px;
+
   cursor: pointer;
+
   text-transform: lowercase;
+
   font-family: "SN Pro", sans-serif;
 }
 
@@ -390,8 +539,10 @@ body {
 
 #saveButton {
   background: #4f7cff;
+
   color: #fff;
 }
+
 
 /* =========================================================
    MOBILE
@@ -401,119 +552,242 @@ body {
 
   .calendar {
     width: calc(100% - 16px);
+
     margin: 15px 8px 100px;
+
+    /*
+      The calendar itself is the swipe viewport.
+    */
+    overflow: hidden;
+
     touch-action: pan-y;
   }
 
-  /*
-    Header:
-    The first 55px is the time column.
-    The remaining area is a viewport showing one day.
-  */
-  .header {
+
+  /* -----------------------------------------------
+     Hide desktop completely
+     ----------------------------------------------- */
+
+  .desktop-header,
+  .desktop-schedule {
+    display: none !important;
+  }
+
+
+  /* -----------------------------------------------
+     Mobile header
+     ----------------------------------------------- */
+
+  .mobile-calendar {
     display: block;
+
+    width: 100%;
+    height: 100%;
+
     position: relative;
+  }
+
+  .mobile-header {
+    height: 48px;
+
+    display: flex;
+
+    background: #eee;
+
+    border-bottom: 1px solid #ccc;
+
     overflow: hidden;
   }
 
-  .header > div:first-child {
-    position: absolute;
-    left: 0;
-    top: 0;
+  .mobile-time-header {
+    flex: 0 0 55px;
+
     width: 55px;
-    height: 48px;
-    z-index: 10;
-    background: #eee;
+
     border-right: 1px solid #ddd;
+
+    background: #eee;
+
+    z-index: 10;
   }
 
-  .header-day-track {
-    position: absolute;
-    left: 55px;
-    top: 0;
-    height: 48px;
-    width: calc(500% - 275px);
+  .mobile-header-viewport {
+    flex: 1;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    position: relative;
+  }
+
+  .mobile-header-track {
     display: flex;
-    transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    height: 100%;
+
+    width: 500%;
+
+    transform: translateX(0);
+
+    transition:
+      transform 320ms cubic-bezier(
+        0.22,
+        0.61,
+        0.36,
+        1
+      );
+
     will-change: transform;
   }
 
-  .header-day {
+  .mobile-header-day {
     flex: 0 0 20%;
+
     width: 20%;
+
     height: 48px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-weight: bold;
+
+    font-size: 18px;
+
     border-right: 1px solid #ddd;
+
+    text-transform: lowercase;
   }
 
-  /*
-    Schedule:
-    Keep the time labels fixed on the left.
-    Five day columns sit inside a horizontally moving track.
-  */
-  .schedule {
-    display: block;
-    overflow: hidden;
+
+  /* -----------------------------------------------
+     Mobile schedule viewport
+     ----------------------------------------------- */
+
+  .mobile-schedule {
     position: relative;
-    touch-action: pan-y;
+
+    height: calc(100% - 48px);
+
+    overflow: hidden;
+
+    background: #fff;
   }
 
-  .schedule-time-column {
+
+  /* Fixed time column */
+
+  .mobile-time-column {
     position: absolute;
+
     left: 0;
     top: 0;
     bottom: 0;
+
     width: 55px;
-    z-index: 8;
+
     background: #fff;
+
+    z-index: 10;
   }
 
-  .schedule-time {
+  .mobile-time-row {
     position: relative;
+
     height: calc(100% / 40);
+
     border-right: 1px solid #ddd;
+
     border-bottom: 1px solid #eee;
   }
 
-  .schedule-time.hour {
+  .mobile-time-row.hour {
     border-top: 1px solid #c9c9c9;
   }
 
-  .schedule-time span {
+  .mobile-time-row span {
     position: absolute;
+
     right: 6px;
     top: 0;
+
     transform: translateY(-50%);
+
     font-size: 10px;
+
     color: #777;
+
     white-space: nowrap;
+
     background: #fff;
+
     padding: 0 1px;
-    z-index: 3;
   }
 
-  .mobile-day-track {
+
+  /* -----------------------------------------------
+     Mobile day viewport
+     ----------------------------------------------- */
+
+  .mobile-days-viewport {
     position: absolute;
+
     left: 55px;
+    right: 0;
+
     top: 0;
-    height: 100%;
-    width: calc(500% - 275px);
+    bottom: 0;
+
+    overflow: hidden;
+  }
+
+  .mobile-days-track {
     display: flex;
-    transition: transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1);
+
+    height: 100%;
+
+    width: 500%;
+
+    transform: translateX(0);
+
+    transition:
+      transform 320ms cubic-bezier(
+        0.22,
+        0.61,
+        0.36,
+        1
+      );
+
     will-change: transform;
   }
 
+
+  /* -----------------------------------------------
+     Individual mobile day
+     ----------------------------------------------- */
+
   .mobile-day {
     position: relative;
+
     flex: 0 0 20%;
+
     width: 20%;
+
     height: 100%;
+
     border-right: 1px solid #ddd;
   }
 
   .mobile-slot {
     position: relative;
+
     width: 100%;
+
     height: calc(100% / 40);
+
     border-bottom: 1px solid #eee;
   }
 
@@ -521,81 +795,246 @@ body {
     border-top: 1px solid #c9c9c9;
   }
 
-  /*
-    Events on mobile are positioned relative to their day column.
-  */
-  .mobile-day .event {
-    left: 3px;
-    right: 3px;
+
+  /* -----------------------------------------------
+     Mobile current time line
+     ----------------------------------------------- */
+
+  .mobile-schedule .now-line {
+    left: 55px;
+
+    right: 0;
+
+    z-index: 15;
   }
+
+
+  /* -----------------------------------------------
+     Mobile dots
+     ----------------------------------------------- */
 
   .day-dots {
     display: flex;
   }
 
-  /*
-    Prevent accidental text selection during the gesture.
-  */
-  .calendar.swiping {
-    user-select: none;
-    -webkit-user-select: none;
-  }
 }
 
-/* Slightly smaller modal on narrow phones */
+
+/* Smaller modal */
 @media (max-width: 400px) {
+
   .modal-content {
     width: calc(100% - 30px);
   }
+
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <div class="calendar" id="calendar">
 
-  <!-- Desktop header is generated by JavaScript -->
-  <div class="header" id="header"></div>
 
-  <!-- Desktop/mobile schedule is generated by JavaScript -->
-  <div class="schedule" id="schedule"></div>
+  <!-- =====================================================
+       DESKTOP CALENDAR
+       ===================================================== -->
+
+  <div class="desktop-header">
+
+    <div></div>
+
+    <div>Monday</div>
+    <div>Tuesday</div>
+    <div>Wednesday</div>
+    <div>Thursday</div>
+    <div>Friday</div>
+
+  </div>
+
+
+  <div
+    class="desktop-schedule"
+    id="desktopSchedule"
+  ></div>
+
+
+  <!-- =====================================================
+       MOBILE CALENDAR
+       ===================================================== -->
+
+  <div
+    class="mobile-calendar"
+    id="mobileCalendar"
+  >
+
+    <div class="mobile-header">
+
+      <div class="mobile-time-header"></div>
+
+      <div class="mobile-header-viewport">
+
+        <div
+          class="mobile-header-track"
+          id="mobileHeaderTrack"
+        >
+
+          <div class="mobile-header-day">
+            Monday
+          </div>
+
+          <div class="mobile-header-day">
+            Tuesday
+          </div>
+
+          <div class="mobile-header-day">
+            Wednesday
+          </div>
+
+          <div class="mobile-header-day">
+            Thursday
+          </div>
+
+          <div class="mobile-header-day">
+            Friday
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div
+      class="mobile-schedule"
+      id="mobileSchedule"
+    >
+
+      <div
+        class="mobile-time-column"
+        id="mobileTimeColumn"
+      ></div>
+
+
+      <div class="mobile-days-viewport">
+
+        <div
+          class="mobile-days-track"
+          id="mobileDaysTrack"
+        >
+
+          <div
+            class="mobile-day"
+            data-day="0"
+          ></div>
+
+          <div
+            class="mobile-day"
+            data-day="1"
+          ></div>
+
+          <div
+            class="mobile-day"
+            data-day="2"
+          ></div>
+
+          <div
+            class="mobile-day"
+            data-day="3"
+          ></div>
+
+          <div
+            class="mobile-day"
+            data-day="4"
+          ></div>
+
+        </div>
+
+      </div>
+
+
+      <div
+        class="now-line"
+        id="mobileNowLine"
+      ></div>
+
+    </div>
+
+  </div>
 
 </div>
+
+
+<!-- =======================================================
+     ADD BUTTON
+     ======================================================= -->
 
 <div class="add-container">
-  <div class="day-dots" id="dayDots"></div>
-  <button id="addEventButton">＋ Add Class</button>
+
+  <div
+    class="day-dots"
+    id="dayDots"
+  ></div>
+
+  <button id="addEventButton">
+    ＋ Add Class
+  </button>
+
 </div>
 
-<div class="modal" id="eventModal">
+
+<!-- =======================================================
+     MODAL
+     ======================================================= -->
+
+<div
+  class="modal"
+  id="eventModal"
+>
 
   <div class="modal-content">
 
     <h2>Add Class</h2>
 
+
     <div class="form-group">
+
       <label>Class Name</label>
+
       <input
         type="text"
         id="eventName"
         placeholder="e.g. calculus I"
       >
+
     </div>
 
+
     <div class="form-group">
+
       <label>Location</label>
+
       <input
         type="text"
         id="eventLocation"
         placeholder="e.g. room 204"
       >
+
     </div>
 
+
     <div class="form-group">
+
       <label>Color</label>
 
-      <div class="color-grid" id="eventColorGrid">
+      <div
+        class="color-grid"
+        id="eventColorGrid"
+      >
 
         <div
           class="color-swatch automatic selected"
@@ -606,123 +1045,136 @@ body {
         <div
           class="color-swatch"
           data-color="#ffc7c7"
-          title="Pastel Red"
           style="background-color:#ffc7c7;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#ffd4b8"
-          title="Pastel Orange"
           style="background-color:#ffd4b8;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#fff0ad"
-          title="Pastel Yellow"
           style="background-color:#fff0ad;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#c9efc9"
-          title="Pastel Green"
           style="background-color:#c9efc9;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#bceeee"
-          title="Pastel Cyan"
           style="background-color:#bceeee;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#c8dcff"
-          title="Pastel Blue"
           style="background-color:#c8dcff;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#dec8ff"
-          title="Pastel Purple"
           style="background-color:#dec8ff;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#b76b6b"
-          title="Dark Red"
           style="background-color:#b76b6b;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#b78362"
-          title="Dark Orange"
           style="background-color:#b78362;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#aaa05e"
-          title="Dark Yellow"
           style="background-color:#aaa05e;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#6f9b6f"
-          title="Dark Green"
           style="background-color:#6f9b6f;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#5f9696"
-          title="Dark Cyan"
           style="background-color:#5f9696;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#667fa8"
-          title="Dark Blue"
           style="background-color:#667fa8;"
         ></div>
 
         <div
           class="color-swatch"
           data-color="#8069a3"
-          title="Dark Purple"
           style="background-color:#8069a3;"
         ></div>
 
       </div>
+
     </div>
 
+
     <div class="form-group">
+
       <label>Day</label>
 
       <select id="eventDay">
-        <option value="0">Monday</option>
-        <option value="1">Tuesday</option>
-        <option value="2">Wednesday</option>
-        <option value="3">Thursday</option>
-        <option value="4">Friday</option>
+
+        <option value="0">
+          Monday
+        </option>
+
+        <option value="1">
+          Tuesday
+        </option>
+
+        <option value="2">
+          Wednesday
+        </option>
+
+        <option value="3">
+          Thursday
+        </option>
+
+        <option value="4">
+          Friday
+        </option>
+
       </select>
+
     </div>
 
+
     <div class="form-group">
+
       <label>Start Time</label>
+
       <select id="eventTime"></select>
+
     </div>
 
+
     <div class="form-group">
+
       <label>Duration (minutes)</label>
+
       <input
         type="number"
         id="eventDuration"
@@ -730,33 +1182,74 @@ body {
         step="15"
         value="60"
       >
+
     </div>
 
+
     <div class="modal-buttons">
-      <button id="cancelButton">Cancel</button>
-      <button id="saveButton">Add Class</button>
+
+      <button id="cancelButton">
+        Cancel
+      </button>
+
+      <button id="saveButton">
+        Add Class
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
+
 <script>
+
 /* =========================================================
    ELEMENTS
    ========================================================= */
 
-const calendarEl = document.getElementById("calendar");
-const header = document.getElementById("header");
-const schedule = document.getElementById("schedule");
-const modal = document.getElementById("eventModal");
+const calendarEl =
+  document.getElementById("calendar");
 
-const eventName = document.getElementById("eventName");
-const eventLocation = document.getElementById("eventLocation");
-const eventDay = document.getElementById("eventDay");
-const eventTime = document.getElementById("eventTime");
-const eventDuration = document.getElementById("eventDuration");
-const eventColorGrid = document.getElementById("eventColorGrid");
-const dayDots = document.getElementById("dayDots");
+const desktopSchedule =
+  document.getElementById("desktopSchedule");
+
+const mobileTimeColumn =
+  document.getElementById("mobileTimeColumn");
+
+const mobileDaysTrack =
+  document.getElementById("mobileDaysTrack");
+
+const mobileHeaderTrack =
+  document.getElementById("mobileHeaderTrack");
+
+const mobileNowLine =
+  document.getElementById("mobileNowLine");
+
+const modal =
+  document.getElementById("eventModal");
+
+const eventName =
+  document.getElementById("eventName");
+
+const eventLocation =
+  document.getElementById("eventLocation");
+
+const eventDay =
+  document.getElementById("eventDay");
+
+const eventTime =
+  document.getElementById("eventTime");
+
+const eventDuration =
+  document.getElementById("eventDuration");
+
+const eventColorGrid =
+  document.getElementById("eventColorGrid");
+
+const dayDots =
+  document.getElementById("dayDots");
 
 
 /* =========================================================
@@ -783,15 +1276,8 @@ const automaticColors = [
   "#8069a3"
 ];
 
-const dayNames = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday"
-];
-
 let classColors = {};
+
 let selectedColor = "automatic";
 
 
@@ -799,7 +1285,8 @@ let selectedColor = "automatic";
    CURRENT DAY
    ========================================================= */
 
-const jsDay = new Date().getDay();
+const jsDay =
+  new Date().getDay();
 
 let currentDay =
   (jsDay === 0 || jsDay === 6)
@@ -808,231 +1295,22 @@ let currentDay =
 
 
 /* =========================================================
-   MOBILE SWIPE STATE
+   BUILD DAY DOTS
    ========================================================= */
 
-let touchStartX = null;
-let touchStartY = null;
-let touchCurrentX = null;
+for (let i = 0; i < 5; i++) {
 
-let isDragging = false;
-
-const SWIPE_THRESHOLD = 50;
-
-
-/* =========================================================
-   BUILD HEADER
-   ========================================================= */
-
-function buildHeader() {
-
-  header.innerHTML = "";
-
-  /* Empty time column */
-  const empty = document.createElement("div");
-  empty.className = "header-time";
-  header.appendChild(empty);
-
-  /*
-    Desktop:
-    normal grid children.
-
-    Mobile:
-    this becomes a horizontally sliding track.
-  */
-  const track = document.createElement("div");
-  track.className = "header-day-track";
-  track.id = "headerDayTrack";
-
-  dayNames.forEach((name, index) => {
-
-    const day = document.createElement("div");
-
-    day.className = "header-day";
-    day.dataset.day = index;
-    day.textContent = name;
-
-    track.appendChild(day);
-  });
-
-  header.appendChild(track);
-}
-
-
-/* =========================================================
-   BUILD SCHEDULE
-   ========================================================= */
-
-function buildSchedule() {
-
-  schedule.innerHTML = "";
-
-  /*
-    DESKTOP LAYOUT
-
-    Keep the original grid:
-    time | mon | tue | wed | thu | fri
-  */
-
-  const desktopGrid = document.createElement("div");
-
-  desktopGrid.className = "desktop-schedule-grid";
-
-  desktopGrid.style.display = "grid";
-  desktopGrid.style.gridTemplateColumns = "115px repeat(5, 1fr)";
-  desktopGrid.style.gridTemplateRows = "repeat(40, 1fr)";
-  desktopGrid.style.height = "100%";
-  desktopGrid.style.width = "100%";
-
-  /* Time column */
-  for (let hour = startHour; hour < endHour; hour++) {
-
-    for (let quarter = 0; quarter < 4; quarter++) {
-
-      const time = document.createElement("div");
-
-      time.className =
-        "time" +
-        (quarter === 0 ? " hour" : "");
-
-      if (quarter === 0) {
-
-        const label = document.createElement("span");
-
-        label.textContent = formatTime(hour * 60);
-
-        time.appendChild(label);
-      }
-
-      desktopGrid.appendChild(time);
-
-      /* Five day slots */
-      for (let day = 0; day < 5; day++) {
-
-        const slot = document.createElement("div");
-
-        slot.className =
-          "slot" +
-          (quarter === 0 ? " hour-start" : "");
-
-        slot.dataset.day = day;
-        slot.dataset.hour = hour;
-        slot.dataset.quarter = quarter;
-
-        desktopGrid.appendChild(slot);
-      }
-    }
-  }
-
-  schedule.appendChild(desktopGrid);
-
-
-  /*
-    MOBILE LAYOUT
-
-    Fixed time column + horizontally sliding day track.
-  */
-
-  const timeColumn = document.createElement("div");
-
-  timeColumn.className = "schedule-time-column";
-
-  for (let hour = startHour; hour < endHour; hour++) {
-
-    for (let quarter = 0; quarter < 4; quarter++) {
-
-      const row = document.createElement("div");
-
-      row.className =
-        "schedule-time" +
-        (quarter === 0 ? " hour" : "");
-
-      if (quarter === 0) {
-
-        const label = document.createElement("span");
-
-        label.textContent = formatTime(hour * 60);
-
-        row.appendChild(label);
-      }
-
-      timeColumn.appendChild(row);
-    }
-  }
-
-  schedule.appendChild(timeColumn);
-
-
-  /*
-    Five mobile day columns.
-  */
-
-  const mobileTrack = document.createElement("div");
-
-  mobileTrack.className = "mobile-day-track";
-  mobileTrack.id = "mobileDayTrack";
-
-  for (let day = 0; day < 5; day++) {
-
-    const dayColumn = document.createElement("div");
-
-    dayColumn.className = "mobile-day";
-    dayColumn.dataset.day = day;
-
-    for (let hour = startHour; hour < endHour; hour++) {
-
-      for (let quarter = 0; quarter < 4; quarter++) {
-
-        const slot = document.createElement("div");
-
-        slot.className =
-          "mobile-slot" +
-          (quarter === 0 ? " hour-start" : "");
-
-        slot.dataset.day = day;
-        slot.dataset.hour = hour;
-        slot.dataset.quarter = quarter;
-
-        dayColumn.appendChild(slot);
-      }
-    }
-
-    mobileTrack.appendChild(dayColumn);
-  }
-
-  schedule.appendChild(mobileTrack);
-
-
-  /*
-    Current-time line.
-    It gets moved between desktop/mobile layouts as needed.
-  */
-
-  const nowLine = document.createElement("div");
-
-  nowLine.className = "now-line";
-  nowLine.id = "nowLine";
-
-  schedule.appendChild(nowLine);
-}
-
-
-/* =========================================================
-   MOBILE DAY DOTS
-   ========================================================= */
-
-dayNames.forEach(() => {
-
-  const dot = document.createElement("div");
+  const dot =
+    document.createElement("div");
 
   dot.className = "dot";
 
   dayDots.appendChild(dot);
-});
+}
 
 
 /* =========================================================
-   VIEW CHECK
+   MOBILE CHECK
    ========================================================= */
 
 function isMobileView() {
@@ -1044,125 +1322,224 @@ function isMobileView() {
 
 
 /* =========================================================
-   UPDATE DOTS
+   BUILD DESKTOP SCHEDULE
    ========================================================= */
 
-function updateDots() {
+function buildDesktopSchedule() {
 
-  dayDots
-    .querySelectorAll(".dot")
-    .forEach((dot, index) => {
+  desktopSchedule.innerHTML = "";
 
-      dot.classList.toggle(
-        "active",
-        index === currentDay
+
+  for (
+    let hour = startHour;
+    hour < endHour;
+    hour++
+  ) {
+
+    for (
+      let quarter = 0;
+      quarter < 4;
+      quarter++
+    ) {
+
+      /* Time */
+
+      const time =
+        document.createElement("div");
+
+      time.className =
+        "time" +
+        (
+          quarter === 0
+            ? " hour"
+            : ""
+        );
+
+
+      if (quarter === 0) {
+
+        const label =
+          document.createElement("span");
+
+        label.textContent =
+          formatTime(hour * 60);
+
+        time.appendChild(label);
+      }
+
+
+      desktopSchedule.appendChild(time);
+
+
+      /* Five day columns */
+
+      for (
+        let day = 0;
+        day < 5;
+        day++
+      ) {
+
+        const slot =
+          document.createElement("div");
+
+        slot.className =
+          "desktop-slot" +
+          (
+            quarter === 0
+              ? " hour-start"
+              : ""
+          );
+
+        slot.dataset.day = day;
+        slot.dataset.hour = hour;
+        slot.dataset.quarter = quarter;
+
+        desktopSchedule.appendChild(slot);
+      }
+    }
+  }
+
+
+  const nowLine =
+    document.createElement("div");
+
+  nowLine.className =
+    "now-line";
+
+  nowLine.id =
+    "desktopNowLine";
+
+  desktopSchedule.appendChild(
+    nowLine
+  );
+}
+
+
+/* =========================================================
+   BUILD MOBILE TIME COLUMN
+   ========================================================= */
+
+function buildMobileTimeColumn() {
+
+  mobileTimeColumn.innerHTML = "";
+
+
+  for (
+    let hour = startHour;
+    hour < endHour;
+    hour++
+  ) {
+
+    for (
+      let quarter = 0;
+      quarter < 4;
+      quarter++
+    ) {
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "mobile-time-row" +
+        (
+          quarter === 0
+            ? " hour"
+            : ""
+        );
+
+
+      if (quarter === 0) {
+
+        const label =
+          document.createElement("span");
+
+        label.textContent =
+          formatTime(hour * 60);
+
+        row.appendChild(label);
+      }
+
+
+      mobileTimeColumn.appendChild(row);
+    }
+  }
+}
+
+
+/* =========================================================
+   BUILD MOBILE DAY SLOTS
+   ========================================================= */
+
+function buildMobileDays() {
+
+  const days =
+    mobileDaysTrack.querySelectorAll(
+      ".mobile-day"
+    );
+
+
+  days.forEach(dayColumn => {
+
+    dayColumn.innerHTML = "";
+
+
+    const day =
+      parseInt(
+        dayColumn.dataset.day
       );
 
-    });
+
+    for (
+      let hour = startHour;
+      hour < endHour;
+      hour++
+    ) {
+
+      for (
+        let quarter = 0;
+        quarter < 4;
+        quarter++
+      ) {
+
+        const slot =
+          document.createElement("div");
+
+        slot.className =
+          "mobile-slot" +
+          (
+            quarter === 0
+              ? " hour-start"
+              : ""
+          );
+
+        slot.dataset.day =
+          day;
+
+        slot.dataset.hour =
+          hour;
+
+        slot.dataset.quarter =
+          quarter;
+
+        dayColumn.appendChild(slot);
+      }
+    }
+
+  });
 }
 
 
 /* =========================================================
-   UPDATE DAY POSITION
+   INITIAL BUILD
    ========================================================= */
 
-function updateDayPosition(animate = true, dragOffset = 0) {
-
-  const mobile = isMobileView();
-
-  const headerTrack =
-    document.getElementById("headerDayTrack");
-
-  const mobileTrack =
-    document.getElementById("mobileDayTrack");
-
-  if (!headerTrack || !mobileTrack) return;
-
-  if (!mobile) {
-
-    headerTrack.style.transform = "";
-    mobileTrack.style.transform = "";
-
-    return;
-  }
-
-
-  /*
-    The track is 5 days wide.
-
-    Each day takes 20% of the track.
-
-    currentDay 0 = 0%
-    currentDay 1 = -20%
-    currentDay 2 = -40%
-    etc.
-
-    dragOffset is measured in pixels and lets the
-    track follow the user's finger.
-  */
-
-  const percentage = currentDay * 20;
-
-  const transform =
-    `translateX(calc(-${percentage}% + ${dragOffset}px))`;
-
-
-  if (!animate) {
-
-    headerTrack.style.transition = "none";
-    mobileTrack.style.transition = "none";
-
-  } else {
-
-    headerTrack.style.transition =
-      "transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1)";
-
-    mobileTrack.style.transition =
-      "transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1)";
-  }
-
-
-  headerTrack.style.transform = transform;
-  mobileTrack.style.transform = transform;
-
-
-  if (!animate) {
-
-    /*
-      Force the browser to acknowledge the transition
-      reset before allowing animations again.
-    */
-
-    requestAnimationFrame(() => {
-
-      headerTrack.style.transition =
-        "transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1)";
-
-      mobileTrack.style.transition =
-        "transform 0.32s cubic-bezier(0.22, 0.61, 0.36, 1)";
-    });
-  }
-}
+buildDesktopSchedule();
+buildMobileTimeColumn();
+buildMobileDays();
 
 
 /* =========================================================
-   UPDATE VIEW
-   ========================================================= */
-
-function updateDayVisibility() {
-
-  updateDots();
-
-  updateDayPosition(true, 0);
-
-  resizeEvents();
-
-  updateNowLine();
-}
-
-
-/* =========================================================
-   START-TIME DROPDOWN
+   START TIME OPTIONS
    ========================================================= */
 
 for (
@@ -1181,10 +1558,12 @@ for (
       hour * 60 +
       quarter * 15;
 
+
     const option =
       document.createElement("option");
 
-    option.value = minutes;
+    option.value =
+      minutes;
 
     option.textContent =
       formatTime(minutes);
@@ -1195,7 +1574,7 @@ for (
 
 
 /* =========================================================
-   COLORS
+   AUTOMATIC COLORS
    ========================================================= */
 
 function getAutomaticColor(name) {
@@ -1205,27 +1584,36 @@ function getAutomaticColor(name) {
     return classColors[name];
   }
 
+
   const used =
     Object.values(classColors);
 
+
   const available =
     automaticColors.filter(
-      color => !used.includes(color)
+      color =>
+        !used.includes(color)
     );
+
 
   const pool =
     available.length
       ? available
       : automaticColors;
 
+
   const color =
     pool[
       Math.floor(
-        Math.random() * pool.length
+        Math.random() *
+        pool.length
       )
     ];
 
-  classColors[name] = color;
+
+  classColors[name] =
+    color;
+
 
   return color;
 }
@@ -1237,9 +1625,17 @@ function getAutomaticColor(name) {
 
 function rowHeight() {
 
+  const container =
+    isMobileView()
+      ? document.getElementById(
+          "mobileSchedule"
+        )
+      : desktopSchedule;
+
+
   return (
-    schedule.getBoundingClientRect().height /
-    40
+    container.getBoundingClientRect()
+      .height / 40
   );
 }
 
@@ -1251,9 +1647,108 @@ function rowHeight() {
 function eventHeight(duration) {
 
   return (
-    (duration / 15) *
-    rowHeight()
-  ) - 5;
+    duration / 15
+  ) * rowHeight() - 5;
+}
+
+
+/* =========================================================
+   CREATE EVENT ELEMENT
+   ========================================================= */
+
+function makeEventElement(
+  name,
+  day,
+  startMinutes,
+  durationMinutes,
+  color,
+  location
+) {
+
+  const event =
+    document.createElement("div");
+
+  event.className =
+    "event";
+
+
+  event.dataset.name =
+    name;
+
+  event.dataset.day =
+    day;
+
+  event.dataset.start =
+    startMinutes;
+
+  event.dataset.duration =
+    durationMinutes;
+
+  event.dataset.color =
+    color;
+
+  event.dataset.location =
+    location || "";
+
+
+  event.style.backgroundColor =
+    color;
+
+
+  event.style.height =
+    eventHeight(
+      durationMinutes
+    ) + "px";
+
+
+  const locationHTML =
+    location
+      ? `<span class="event-location">${escapeHTML(location)}</span>`
+      : "";
+
+
+  event.innerHTML =
+    `<strong>${escapeHTML(name)}</strong>` +
+    locationHTML +
+    `${formatTime(startMinutes)} - ${formatTime(startMinutes + durationMinutes)}` +
+    `<button aria-label="Delete class">×</button>`;
+
+
+  event
+    .querySelector("button")
+    .onclick = (e) => {
+
+      e.stopPropagation();
+
+
+      /*
+        Remove every visual copy of this
+        event using its identifying data.
+      */
+
+      document
+        .querySelectorAll(".event")
+        .forEach(existing => {
+
+          if (
+            existing.dataset.name === name &&
+            existing.dataset.day === String(day) &&
+            existing.dataset.start === String(startMinutes)
+          ) {
+
+            existing.remove();
+          }
+
+        });
+
+
+      saveEvents();
+
+      cleanupUnusedColors();
+    };
+
+
+  return event;
 }
 
 
@@ -1271,36 +1766,13 @@ function createEvent(
 ) {
 
   const hour =
-    Math.floor(startMinutes / 60);
+    Math.floor(
+      startMinutes / 60
+    );
+
 
   const quarter =
     (startMinutes % 60) / 15;
-
-
-  /*
-    Find desktop slot.
-  */
-
-  const desktopSlot =
-    document.querySelector(
-      `.desktop-schedule-grid .slot[data-day="${day}"][data-hour="${hour}"][data-quarter="${quarter}"]`
-    );
-
-
-  /*
-    Find mobile slot.
-  */
-
-  const mobileSlot =
-    document.querySelector(
-      `.mobile-day[data-day="${day}"] .mobile-slot[data-hour="${hour}"][data-quarter="${quarter}"]`
-    );
-
-
-  if (!desktopSlot && !mobileSlot) {
-
-    return;
-  }
 
 
   if (!color) {
@@ -1310,108 +1782,78 @@ function createEvent(
   }
 
 
-  /*
-    Create ONE event element for desktop
-    and clone it for mobile.
+  /* Desktop copy */
 
-    This keeps both layouts synchronized.
-  */
-
-  const createEventElement = (isMobile) => {
-
-    const event =
-      document.createElement("div");
-
-    event.className = "event";
-
-    event.dataset.name = name;
-    event.dataset.day = day;
-    event.dataset.start = startMinutes;
-    event.dataset.duration = durationMinutes;
-    event.dataset.color = color;
-    event.dataset.location = location || "";
-
-    event.style.backgroundColor =
-      color;
-
-    event.style.height =
-      eventHeight(durationMinutes) + "px";
-
-
-    const locationHTML =
-      location
-        ? `<span class="event-location">${escapeHTML(location)}</span>`
-        : "";
-
-
-    event.innerHTML =
-      `<strong>${escapeHTML(name)}</strong>` +
-      locationHTML +
-      `${formatTime(startMinutes)} - ${formatTime(startMinutes + durationMinutes)}` +
-      `<button aria-label="Delete class">×</button>`;
-
-
-    event.querySelector("button").onclick =
-      (e) => {
-
-        e.stopPropagation();
-
-        /*
-          Delete both desktop and mobile copies
-          of the same event.
-        */
-
-        document
-          .querySelectorAll(
-            `.event[data-name="${CSS.escape(name)}"][data-day="${day}"][data-start="${startMinutes}"]`
-          )
-          .forEach(el => el.remove());
-
-
-        saveEvents();
-
-        cleanupUnusedColors();
-      };
-
-
-    return event;
-  };
+  const desktopSlot =
+    document.querySelector(
+      `.desktop-slot[data-day="${day}"][data-hour="${hour}"][data-quarter="${quarter}"]`
+    );
 
 
   if (desktopSlot) {
 
     desktopSlot.appendChild(
-      createEventElement(false)
+      makeEventElement(
+        name,
+        day,
+        startMinutes,
+        durationMinutes,
+        color,
+        location
+      )
     );
   }
 
 
-  if (mobileSlot) {
+  /* Mobile copy */
 
-    mobileSlot.appendChild(
-      createEventElement(true)
+  const mobileDay =
+    mobileDaysTrack.querySelector(
+      `.mobile-day[data-day="${day}"]`
     );
+
+
+  if (mobileDay) {
+
+    const mobileSlot =
+      mobileDay.querySelector(
+        `.mobile-slot[data-hour="${hour}"][data-quarter="${quarter}"]`
+      );
+
+
+    if (mobileSlot) {
+
+      mobileSlot.appendChild(
+        makeEventElement(
+          name,
+          day,
+          startMinutes,
+          durationMinutes,
+          color,
+          location
+        )
+      );
+    }
   }
 }
 
 
 /* =========================================================
-   SAVE EVENTS
+   SAVE
    ========================================================= */
 
 function saveEvents() {
 
   const events = [];
 
+
   /*
-    Only read desktop events so we don't save
-    every event twice.
+    Only save desktop copies so each class
+    is saved once.
   */
 
-  document
-    .querySelectorAll(
-      ".desktop-schedule-grid .event"
-    )
+  desktopSchedule
+    .querySelectorAll(".event")
     .forEach(event => {
 
       events.push({
@@ -1423,13 +1865,19 @@ function saveEvents() {
           event.dataset.location,
 
         day:
-          parseInt(event.dataset.day),
+          parseInt(
+            event.dataset.day
+          ),
 
         start:
-          parseInt(event.dataset.start),
+          parseInt(
+            event.dataset.start
+          ),
 
         duration:
-          parseInt(event.dataset.duration),
+          parseInt(
+            event.dataset.duration
+          ),
 
         color:
           event.dataset.color
@@ -1449,13 +1897,15 @@ function saveEvents() {
       JSON.stringify(saveData)
     ) +
     "; max-age=" +
-    (60 * 60 * 24 * 365) +
+    (
+      60 * 60 * 24 * 365
+    ) +
     "; path=/";
 }
 
 
 /* =========================================================
-   LOAD EVENTS
+   LOAD
    ========================================================= */
 
 function loadEvents() {
@@ -1472,7 +1922,9 @@ function loadEvents() {
       );
 
 
-  if (!cookie) return;
+  if (!cookie) {
+    return;
+  }
 
 
   try {
@@ -1523,7 +1975,7 @@ function loadEvents() {
 
 
 /* =========================================================
-   CLEAN UP UNUSED COLORS
+   CLEANUP COLORS
    ========================================================= */
 
 function cleanupUnusedColors() {
@@ -1532,10 +1984,8 @@ function cleanupUnusedColors() {
     new Set();
 
 
-  document
-    .querySelectorAll(
-      ".desktop-schedule-grid .event"
-    )
+  desktopSchedule
+    .querySelectorAll(".event")
     .forEach(event => {
 
       namesInUse.add(
@@ -1564,7 +2014,9 @@ function cleanupUnusedColors() {
 
 function selectSwatch(color) {
 
-  selectedColor = color;
+  selectedColor =
+    color;
+
 
   eventColorGrid
     .querySelectorAll(
@@ -1604,10 +2056,15 @@ eventColorGrid
 function resetModalForm() {
 
   eventName.value = "";
-  eventLocation.value = "";
-  eventDuration.value = "60";
 
-  selectSwatch("automatic");
+  eventLocation.value = "";
+
+  eventDuration.value =
+    "60";
+
+  selectSwatch(
+    "automatic"
+  );
 }
 
 
@@ -1615,13 +2072,16 @@ function resetModalFormFull() {
 
   resetModalForm();
 
-  eventDay.selectedIndex = 0;
-  eventTime.selectedIndex = 0;
+  eventDay.selectedIndex =
+    0;
+
+  eventTime.selectedIndex =
+    0;
 }
 
 
 /* =========================================================
-   SAVE BUTTON
+   SAVE CLASS
    ========================================================= */
 
 document.getElementById(
@@ -1647,15 +2107,21 @@ document.getElementById(
 
 
   const day =
-    parseInt(eventDay.value);
+    parseInt(
+      eventDay.value
+    );
 
 
   const startMinutes =
-    parseInt(eventTime.value);
+    parseInt(
+      eventTime.value
+    );
 
 
   const durationMinutes =
-    parseInt(eventDuration.value);
+    parseInt(
+      eventDuration.value
+    );
 
 
   if (
@@ -1732,12 +2198,13 @@ document.getElementById(
 
   resetModalForm();
 
-  modal.style.display = "none";
+  modal.style.display =
+    "none";
 };
 
 
 /* =========================================================
-   ADD EVENT BUTTON
+   ADD BUTTON
    ========================================================= */
 
 document.getElementById(
@@ -1745,7 +2212,7 @@ document.getElementById(
 ).onclick = () => {
 
   /*
-    On mobile, default the new class to
+    On mobile, automatically select
     whichever day is currently visible.
   */
 
@@ -1755,13 +2222,14 @@ document.getElementById(
       currentDay;
   }
 
+
   modal.style.display =
     "flex";
 };
 
 
 /* =========================================================
-   CANCEL BUTTON
+   CANCEL
    ========================================================= */
 
 document.getElementById(
@@ -1786,6 +2254,7 @@ function formatTime(totalMinutes) {
       totalMinutes / 60
     );
 
+
   const minutes =
     totalMinutes % 60;
 
@@ -1803,7 +2272,10 @@ function formatTime(totalMinutes) {
   const minuteText =
     minutes
       .toString()
-      .padStart(2, "0");
+      .padStart(
+        2,
+        "0"
+      );
 
 
   const suffix =
@@ -1825,9 +2297,12 @@ function formatTime(totalMinutes) {
 function escapeHTML(text) {
 
   const div =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
-  div.textContent = text;
+  div.textContent =
+    text;
 
   return div.innerHTML;
 }
@@ -1854,7 +2329,7 @@ function resizeEvents() {
 
 
 /* =========================================================
-   CURRENT TIME LINE
+   UPDATE CURRENT TIME
    ========================================================= */
 
 function updateNowLine() {
@@ -1875,9 +2350,13 @@ function updateNowLine() {
     endHour * 60;
 
 
-  const nowLine =
+  /*
+    Desktop
+  */
+
+  const desktopLine =
     document.getElementById(
-      "nowLine"
+      "desktopNowLine"
     );
 
 
@@ -1886,30 +2365,53 @@ function updateNowLine() {
     mins > endMin
   ) {
 
-    nowLine.style.display =
+    desktopLine.style.display =
+      "none";
+
+    mobileNowLine.style.display =
       "none";
 
     return;
   }
 
 
-  nowLine.style.display =
-    "block";
-
-
-  nowLine.style.top =
+  const percentage =
     (
       (mins - startMin) /
       (endMin - startMin)
-    ) *
-    schedule.getBoundingClientRect().height +
+    );
+
+
+  desktopLine.style.display =
+    "block";
+
+
+  desktopLine.style.top =
+    percentage *
+    desktopSchedule
+      .getBoundingClientRect()
+      .height +
+    "px";
+
+
+  /*
+    Mobile
+  */
+
+  mobileNowLine.style.display =
+    "block";
+
+
+  mobileNowLine.style.top =
+    percentage *
+    document.getElementById(
+      "mobileSchedule"
+    )
+      .getBoundingClientRect()
+      .height +
     "px";
 }
 
-
-/* =========================================================
-   UPDATE NOW LINE
-   ========================================================= */
 
 setInterval(
   updateNowLine,
@@ -1918,18 +2420,110 @@ setInterval(
 
 
 /* =========================================================
-   SWIPE START
+   MOBILE DAY POSITION
+   ========================================================= */
+
+function setMobileDayPosition(
+  animate = true,
+  offset = 0
+) {
+
+  if (!isMobileView()) {
+    return;
+  }
+
+
+  /*
+    Each day is exactly 20% of the
+    five-day track.
+
+    Therefore:
+    
+    Monday   = 0%
+    Tuesday  = -20%
+    Wednesday = -40%
+    Thursday = -60%
+    Friday   = -80%
+  */
+
+  const percentage =
+    currentDay * 20;
+
+
+  const transform =
+    `translateX(calc(-${percentage}% + ${offset}px))`;
+
+
+  const transition =
+    animate
+      ? "transform 320ms cubic-bezier(0.22, 0.61, 0.36, 1)"
+      : "none";
+
+
+  mobileDaysTrack.style.transition =
+    transition;
+
+  mobileHeaderTrack.style.transition =
+    transition;
+
+
+  mobileDaysTrack.style.transform =
+    transform;
+
+  mobileHeaderTrack.style.transform =
+    transform;
+
+
+  updateDots();
+}
+
+
+/* =========================================================
+   DOTS
+   ========================================================= */
+
+function updateDots() {
+
+  dayDots
+    .querySelectorAll(".dot")
+    .forEach(
+      (dot, index) => {
+
+        dot.classList.toggle(
+          "active",
+          index === currentDay
+        );
+      }
+    );
+}
+
+
+/* =========================================================
+   SWIPE STATE
+   ========================================================= */
+
+let touchStartX = null;
+let touchStartY = null;
+
+let isSwiping = false;
+
+
+/* =========================================================
+   TOUCH START
    ========================================================= */
 
 calendarEl.addEventListener(
   "touchstart",
-  (e) => {
+  e => {
 
     if (!isMobileView()) {
       return;
     }
 
-    if (e.touches.length !== 1) {
+
+    if (
+      e.touches.length !== 1
+    ) {
       return;
     }
 
@@ -1940,41 +2534,19 @@ calendarEl.addEventListener(
     touchStartY =
       e.touches[0].clientY;
 
-    touchCurrentX =
-      touchStartX;
-
-    isDragging = true;
-
-    calendarEl.classList.add(
-      "swiping"
-    );
+    isSwiping = true;
 
 
     /*
-      Disable transition while the finger
-      is directly controlling the track.
+      Stop CSS animation while the
+      finger is controlling the track.
     */
 
-    const headerTrack =
-      document.getElementById(
-        "headerDayTrack"
-      );
+    mobileDaysTrack.style.transition =
+      "none";
 
-    const mobileTrack =
-      document.getElementById(
-        "mobileDayTrack"
-      );
-
-
-    if (headerTrack) {
-      headerTrack.style.transition =
-        "none";
-    }
-
-    if (mobileTrack) {
-      mobileTrack.style.transition =
-        "none";
-    }
+    mobileHeaderTrack.style.transition =
+      "none";
 
   },
   {
@@ -1984,34 +2556,38 @@ calendarEl.addEventListener(
 
 
 /* =========================================================
-   SWIPE MOVE
+   TOUCH MOVE
    ========================================================= */
 
 calendarEl.addEventListener(
   "touchmove",
-  (e) => {
+  e => {
 
     if (
-      !isDragging ||
-      !isMobileView() ||
+      !isSwiping ||
       touchStartX === null
     ) {
       return;
     }
 
 
-    touchCurrentX =
-      e.touches[0].clientX;
+    if (
+      e.touches.length !== 1
+    ) {
+      return;
+    }
 
+
+    const currentX =
+      e.touches[0].clientX;
 
     const currentY =
       e.touches[0].clientY;
 
 
     const dx =
-      touchCurrentX -
+      currentX -
       touchStartX;
-
 
     const dy =
       currentY -
@@ -2019,8 +2595,7 @@ calendarEl.addEventListener(
 
 
     /*
-      If the gesture is mainly vertical,
-      let the browser handle scrolling.
+      Ignore vertical gestures.
     */
 
     if (
@@ -2032,22 +2607,22 @@ calendarEl.addEventListener(
     }
 
 
+    let offset =
+      dx;
+
+
     /*
-      Don't let the track move infinitely
-      beyond Monday or Friday.
-
-      Instead, add resistance at the edges.
+      Add resistance at the edges
+      so you can't drag past Monday
+      or Friday.
     */
-
-    let dragOffset = dx;
-
 
     if (
       currentDay === 0 &&
       dx > 0
     ) {
 
-      dragOffset =
+      offset =
         dx * 0.25;
     }
 
@@ -2057,14 +2632,14 @@ calendarEl.addEventListener(
       dx < 0
     ) {
 
-      dragOffset =
+      offset =
         dx * 0.25;
     }
 
 
-    updateDayPosition(
+    setMobileDayPosition(
       false,
-      dragOffset
+      offset
     );
 
   },
@@ -2075,87 +2650,77 @@ calendarEl.addEventListener(
 
 
 /* =========================================================
-   SWIPE END
+   TOUCH END
    ========================================================= */
 
 calendarEl.addEventListener(
   "touchend",
-  (e) => {
+  e => {
 
     if (
-      !isDragging ||
+      !isSwiping ||
       touchStartX === null
     ) {
       return;
     }
 
 
+    const endX =
+      e.changedTouches[0].clientX;
+
+
     const dx =
-      e.changedTouches[0].clientX -
+      endX -
       touchStartX;
 
 
-    isDragging = false;
-
-    calendarEl.classList.remove(
-      "swiping"
-    );
+    const threshold =
+      50;
 
 
     /*
-      Decide whether the swipe is large
-      enough to change days.
-    */
+      Swipe left
+      */
 
     if (
-      Math.abs(dx) >
-      SWIPE_THRESHOLD
+      dx < -threshold &&
+      currentDay < 4
     ) {
 
-      if (
-        dx < 0 &&
-        currentDay < 4
-      ) {
-
-        /*
-          Swipe left:
-          Monday -> Tuesday
-        */
-
-        currentDay++;
-
-      } else if (
-        dx > 0 &&
-        currentDay > 0
-      ) {
-
-        /*
-          Swipe right:
-          Tuesday -> Monday
-        */
-
-        currentDay--;
-      }
+      currentDay++;
     }
 
 
     /*
-      Animate the track into its final position.
+      Swipe right
+      */
+
+    else if (
+      dx > threshold &&
+      currentDay > 0
+    ) {
+
+      currentDay--;
+    }
+
+
+    /*
+      Animate to the final day.
     */
 
-    updateDayPosition(
+    setMobileDayPosition(
       true,
       0
     );
 
-    updateDots();
-
-    updateNowLine();
-
 
     touchStartX = null;
     touchStartY = null;
-    touchCurrentX = null;
+
+    isSwiping = false;
+
+
+    updateDots();
 
   },
   {
@@ -2165,26 +2730,19 @@ calendarEl.addEventListener(
 
 
 /* =========================================================
-   SWIPE CANCEL
+   TOUCH CANCEL
    ========================================================= */
 
 calendarEl.addEventListener(
   "touchcancel",
   () => {
 
-    if (!isDragging) {
+    if (!isSwiping) {
       return;
     }
 
 
-    isDragging = false;
-
-    calendarEl.classList.remove(
-      "swiping"
-    );
-
-
-    updateDayPosition(
+    setMobileDayPosition(
       true,
       0
     );
@@ -2192,30 +2750,31 @@ calendarEl.addEventListener(
 
     touchStartX = null;
     touchStartY = null;
-    touchCurrentX = null;
+
+    isSwiping = false;
+  },
+  {
+    passive: true
   }
 );
 
 
 /* =========================================================
-   WINDOW RESIZE
+   RESIZE
    ========================================================= */
 
 window.addEventListener(
   "resize",
   () => {
 
-    /*
-      Reposition immediately when changing
-      between desktop and mobile.
-    */
+    if (isMobileView()) {
 
-    updateDayPosition(
-      false,
-      0
-    );
+      setMobileDayPosition(
+        false,
+        0
+      );
 
-    updateDots();
+    }
 
     resizeEvents();
 
@@ -2228,17 +2787,14 @@ window.addEventListener(
    INITIALIZE
    ========================================================= */
 
-buildHeader();
-buildSchedule();
-
 loadEvents();
 
-updateDayPosition(
+updateDots();
+
+setMobileDayPosition(
   false,
   0
 );
-
-updateDots();
 
 resizeEvents();
 
