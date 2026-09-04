@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-
 <title>Weekly Schedule</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +32,7 @@ body {
 
 
 /* =========================================================
-   CALENDAR
+   CALENDAR (weekly / class view)
    ========================================================= */
 
 .calendar {
@@ -243,7 +242,47 @@ body {
 
 
 /* =========================================================
-   ADD BUTTON
+   TOP-RIGHT ADD BUTTON
+   ========================================================= */
+
+.top-add-button {
+  position: fixed;
+
+  top: 18px;
+  right: 18px;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  border: none;
+  background: #222;
+  color: #fff;
+
+  font-size: 21px;
+  line-height: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
+
+  z-index: 60;
+
+  font-family: "SN Pro", sans-serif;
+}
+
+.top-add-button:hover {
+  background: #444;
+}
+
+
+/* =========================================================
+   BOTTOM CONTROLS (view toggle + dots)
    ========================================================= */
 
 .add-container {
@@ -253,7 +292,10 @@ body {
   left: 0;
   right: 0;
 
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 
   z-index: 50;
 }
@@ -264,8 +306,6 @@ body {
   justify-content: center;
 
   gap: 8px;
-
-  margin-bottom: 10px;
 }
 
 .dot {
@@ -281,29 +321,42 @@ body {
   background: #222;
 }
 
-#addEventButton {
+.view-toggle {
+  display: inline-flex;
+
+  background: #eee;
+
+  border-radius: 9px;
+
+  padding: 3px;
+
+  gap: 2px;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+}
+
+.view-button {
   border: none;
+  background: transparent;
 
-  background: #222;
-  color: #fff;
-
-  padding: 11px 23px;
+  padding: 9px 18px;
 
   border-radius: 7px;
 
-  font-size: 14px;
+  font-size: 13px;
 
   cursor: pointer;
-
-  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
 
   text-transform: lowercase;
 
   font-family: "SN Pro", sans-serif;
+
+  color: #555;
 }
 
-#addEventButton:hover {
-  background: #444;
+.view-button.active {
+  background: #222;
+  color: #fff;
 }
 
 
@@ -361,7 +414,8 @@ body {
 }
 
 .form-group input,
-.form-group select {
+.form-group select,
+.form-group textarea {
   width: 100%;
 
   padding: 8px;
@@ -375,6 +429,10 @@ body {
   background: #fff;
 
   font-family: "SN Pro", sans-serif;
+}
+
+.form-group textarea {
+  resize: vertical;
 }
 
 .form-group select,
@@ -544,6 +602,327 @@ body {
   color: #fff;
 }
 
+#homeworkCloseButton {
+  background: #ddd;
+}
+
+#homeworkAddButton {
+  background: #4f7cff;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   HOMEWORK LIST (inside homework modal)
+   ========================================================= */
+
+.homework-list {
+  max-height: 150px;
+
+  overflow-y: auto;
+
+  margin-bottom: 14px;
+}
+
+.homework-item {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 7px 9px;
+
+  border: 1px solid #eee;
+
+  border-radius: 6px;
+
+  margin-bottom: 6px;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
+.homework-item-text {
+  flex: 1;
+
+  min-width: 0;
+
+  word-wrap: break-word;
+}
+
+.homework-item-text strong {
+  display: block;
+
+  font-size: 12px;
+
+  text-transform: lowercase;
+
+  margin-bottom: 1px;
+}
+
+.homework-item-delete {
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+
+  font-size: 15px;
+
+  color: #999;
+
+  line-height: 1;
+
+  flex: 0 0 auto;
+}
+
+.homework-item-delete:hover {
+  color: #e63946;
+}
+
+.homework-empty {
+  font-size: 12px;
+
+  color: #999;
+
+  padding: 3px 0 10px;
+
+  text-transform: lowercase;
+}
+
+
+/* =========================================================
+   MONTH VIEW (calendar view)
+   ========================================================= */
+
+.month-view {
+  display: none;
+
+  flex-direction: column;
+
+  width: 95%;
+  max-width: 1200px;
+  height: calc(100vh - 90px);
+
+  margin: 15px auto 75px;
+
+  background: #fff;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.month-toolbar {
+  flex: 0 0 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 20px;
+
+  background: #eee;
+
+  border-bottom: 1px solid #ccc;
+}
+
+.month-nav {
+  width: 28px;
+  height: 28px;
+
+  border: none;
+  background: transparent;
+
+  border-radius: 6px;
+
+  font-size: 20px;
+  line-height: 28px;
+
+  color: #444;
+
+  cursor: pointer;
+
+  font-family: "SN Pro", sans-serif;
+}
+
+.month-nav:hover {
+  background: #ddd;
+}
+
+.month-title {
+  min-width: 170px;
+
+  text-align: center;
+
+  font-weight: bold;
+  font-size: 16px;
+
+  text-transform: lowercase;
+}
+
+.month-weekdays {
+  flex: 0 0 auto;
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+
+  border-bottom: 1px solid #ddd;
+}
+
+.month-weekdays div {
+  padding: 6px 0;
+
+  text-align: center;
+
+  font-size: 11px;
+  color: #777;
+
+  text-transform: lowercase;
+
+  border-right: 1px solid #eee;
+}
+
+.month-weekdays div:last-child {
+  border-right: none;
+}
+
+.month-grid {
+  flex: 1;
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: 1fr;
+
+  overflow-y: auto;
+}
+
+.month-day {
+  position: relative;
+
+  min-height: 60px;
+
+  padding: 6px;
+
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+
+  cursor: pointer;
+}
+
+.month-day:hover {
+  background: #fafafa;
+}
+
+.month-day.empty {
+  cursor: default;
+  background: #fbfbfb;
+}
+
+.month-day.empty:hover {
+  background: #fbfbfb;
+}
+
+.month-day-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 18px;
+  height: 18px;
+
+  padding: 0 3px;
+
+  border-radius: 50%;
+
+  font-size: 12px;
+  color: #555;
+
+  margin-bottom: 4px;
+}
+
+.month-day.today .month-day-number {
+  background: #4f7cff;
+  color: #fff;
+}
+
+.month-day-homework {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.homework-chip {
+  position: relative;
+
+  display: block;
+
+  font-size: 10px;
+
+  background: #eef1ff;
+  color: #333;
+
+  border-radius: 3px;
+
+  padding: 2px 16px 2px 5px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  text-transform: lowercase;
+}
+
+.homework-chip strong {
+  font-weight: bold;
+}
+
+.homework-chip-desc {
+  opacity: 0.8;
+}
+
+.homework-chip-delete {
+  position: absolute;
+
+  right: 1px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 13px;
+  height: 13px;
+
+  padding: 0;
+
+  border: none;
+  background: transparent;
+
+  color: #888;
+
+  font-size: 12px;
+  line-height: 13px;
+
+  cursor: pointer;
+}
+
+.homework-chip-delete:hover {
+  color: #e63946;
+}
+
+.homework-chip-more {
+  font-size: 10px;
+
+  color: #999;
+
+  padding: 0 5px;
+}
+
 
 /* =========================================================
    MOBILE
@@ -562,6 +941,29 @@ body {
     overflow: hidden;
 
     touch-action: pan-y;
+  }
+
+  .month-view {
+    width: calc(100% - 16px);
+
+    margin: 15px 8px 100px;
+  }
+
+  .month-day {
+    min-height: 44px;
+
+    padding: 4px;
+  }
+
+  .month-title {
+    min-width: 120px;
+
+    font-size: 14px;
+  }
+
+  .top-add-button {
+    top: 12px;
+    right: 12px;
   }
 
 
@@ -837,6 +1239,18 @@ body {
 <body>
 
 
+<!-- =======================================================
+     TOP-RIGHT ADD BUTTON
+     ======================================================= -->
+
+<button
+  id="topAddButton"
+  class="top-add-button"
+  aria-label="Add class"
+  title="Add class"
+>＋</button>
+
+
 <div class="calendar" id="calendar">
 
 
@@ -971,7 +1385,46 @@ body {
 
 
 <!-- =======================================================
-     ADD BUTTON
+     MONTH VIEW (calendar view)
+     ======================================================= -->
+
+<div class="month-view" id="monthView">
+
+  <div class="month-toolbar">
+
+    <button
+      id="prevMonthButton"
+      class="month-nav"
+      aria-label="Previous month"
+    >‹</button>
+
+    <div class="month-title" id="monthTitle"></div>
+
+    <button
+      id="nextMonthButton"
+      class="month-nav"
+      aria-label="Next month"
+    >›</button>
+
+  </div>
+
+  <div class="month-weekdays">
+    <div>Sun</div>
+    <div>Mon</div>
+    <div>Tue</div>
+    <div>Wed</div>
+    <div>Thu</div>
+    <div>Fri</div>
+    <div>Sat</div>
+  </div>
+
+  <div class="month-grid" id="monthGrid"></div>
+
+</div>
+
+
+<!-- =======================================================
+     BOTTOM CONTROLS
      ======================================================= -->
 
 <div class="add-container">
@@ -981,15 +1434,25 @@ body {
     id="dayDots"
   ></div>
 
-  <button id="addEventButton">
-    ＋ Add Class
-  </button>
+  <div class="view-toggle">
+
+    <button
+      id="classViewButton"
+      class="view-button active"
+    >Class view</button>
+
+    <button
+      id="calendarViewButton"
+      class="view-button"
+    >Calendar</button>
+
+  </div>
 
 </div>
 
 
 <!-- =======================================================
-     MODAL
+     ADD CLASS MODAL
      ======================================================= -->
 
 <div
@@ -1204,6 +1667,63 @@ body {
 </div>
 
 
+<!-- =======================================================
+     HOMEWORK MODAL
+     ======================================================= -->
+
+<div
+  class="modal"
+  id="homeworkModal"
+>
+
+  <div class="modal-content">
+
+    <h2 id="homeworkModalTitle">Homework</h2>
+
+    <div
+      class="homework-list"
+      id="homeworkList"
+    ></div>
+
+    <div class="form-group">
+
+      <label>Class</label>
+
+      <select id="homeworkClass"></select>
+
+    </div>
+
+
+    <div class="form-group">
+
+      <label>Description</label>
+
+      <textarea
+        id="homeworkDescription"
+        rows="3"
+        placeholder="e.g. finish problem set 4"
+      ></textarea>
+
+    </div>
+
+
+    <div class="modal-buttons">
+
+      <button id="homeworkCloseButton">
+        Close
+      </button>
+
+      <button id="homeworkAddButton">
+        Add
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
 
 /* =========================================================
@@ -1252,6 +1772,36 @@ const eventColorGrid =
 const dayDots =
   document.getElementById("dayDots");
 
+const monthView =
+  document.getElementById("monthView");
+
+const monthTitle =
+  document.getElementById("monthTitle");
+
+const monthGrid =
+  document.getElementById("monthGrid");
+
+const classViewButton =
+  document.getElementById("classViewButton");
+
+const calendarViewButton =
+  document.getElementById("calendarViewButton");
+
+const homeworkModal =
+  document.getElementById("homeworkModal");
+
+const homeworkModalTitle =
+  document.getElementById("homeworkModalTitle");
+
+const homeworkList =
+  document.getElementById("homeworkList");
+
+const homeworkClass =
+  document.getElementById("homeworkClass");
+
+const homeworkDescription =
+  document.getElementById("homeworkDescription");
+
 
 /* =========================================================
    SETTINGS
@@ -1280,6 +1830,17 @@ const automaticColors = [
 let classColors = {};
 
 let selectedColor = "automatic";
+
+/* Homework: { "YYYY-MM-DD": [{ class, description }, ...] } */
+let homeworkData = {};
+
+/* The date currently open in the homework modal */
+let currentHomeworkDateKey = null;
+
+/* First-of-month currently shown in the month view */
+let monthCursor = new Date();
+monthCursor.setDate(1);
+monthCursor.setHours(0, 0, 0, 0);
 
 
 /* =========================================================
@@ -1888,7 +2449,8 @@ function saveEvents() {
 
   const saveData = {
     events,
-    classColors
+    classColors,
+    homeworkData
   };
 
 
@@ -1946,6 +2508,13 @@ function loadEvents() {
 
       classColors =
         data.classColors;
+    }
+
+
+    if (data.homeworkData) {
+
+      homeworkData =
+        data.homeworkData;
     }
 
 
@@ -2137,6 +2706,19 @@ document.getElementById(
     return;
   }
 
+
+  if (
+    durationMinutes % 15 !== 0
+  ) {
+
+    alert(
+      "Duration must be a multiple of 15 minutes."
+    );
+
+    return;
+  }
+
+
   if (
     startMinutes +
     durationMinutes >
@@ -2192,11 +2774,11 @@ document.getElementById(
 
 
 /* =========================================================
-   ADD BUTTON
+   TOP ADD BUTTON
    ========================================================= */
 
 document.getElementById(
-  "addEventButton"
+  "topAddButton"
 ).onclick = () => {
 
   /*
@@ -2204,7 +2786,7 @@ document.getElementById(
     whichever day is currently visible.
   */
 
-  if (isMobileView()) {
+  if (isMobileView() && isClassViewActive()) {
 
     eventDay.value =
       currentDay;
@@ -2217,7 +2799,7 @@ document.getElementById(
 
 
 /* =========================================================
-   CANCEL
+   CANCEL (add class modal)
    ========================================================= */
 
 document.getElementById(
@@ -2227,6 +2809,673 @@ document.getElementById(
   resetModalFormFull();
 
   modal.style.display =
+    "none";
+};
+
+
+/* =========================================================
+   VIEW SWITCHING (class view <-> calendar/month view)
+   ========================================================= */
+
+function isClassViewActive() {
+
+  return (
+    classViewButton.classList.contains(
+      "active"
+    )
+  );
+}
+
+
+function setView(view) {
+
+  if (view === "calendar") {
+
+    calendarEl.style.display =
+      "none";
+
+    monthView.style.display =
+      "flex";
+
+    calendarViewButton.classList.add(
+      "active"
+    );
+
+    classViewButton.classList.remove(
+      "active"
+    );
+
+    dayDots.style.display =
+      "none";
+
+    renderMonth();
+
+  } else {
+
+    calendarEl.style.display =
+      "";
+
+    monthView.style.display =
+      "none";
+
+    classViewButton.classList.add(
+      "active"
+    );
+
+    calendarViewButton.classList.remove(
+      "active"
+    );
+
+    /*
+      Let the normal mobile media query
+      decide whether dots should show.
+    */
+
+    dayDots.style.display =
+      "";
+
+    if (isMobileView()) {
+
+      updateDots();
+    }
+  }
+}
+
+
+classViewButton.onclick = () => {
+
+  setView("class");
+};
+
+
+calendarViewButton.onclick = () => {
+
+  setView("calendar");
+};
+
+
+/* =========================================================
+   MONTH VIEW: NAVIGATION
+   ========================================================= */
+
+document.getElementById(
+  "prevMonthButton"
+).onclick = () => {
+
+  monthCursor.setMonth(
+    monthCursor.getMonth() - 1
+  );
+
+  renderMonth();
+};
+
+
+document.getElementById(
+  "nextMonthButton"
+).onclick = () => {
+
+  monthCursor.setMonth(
+    monthCursor.getMonth() + 1
+  );
+
+  renderMonth();
+};
+
+
+/* =========================================================
+   MONTH VIEW: DATE HELPERS
+   ========================================================= */
+
+function formatDateKey(dateObj) {
+
+  const y =
+    dateObj.getFullYear();
+
+  const m =
+    String(dateObj.getMonth() + 1)
+      .padStart(2, "0");
+
+  const d =
+    String(dateObj.getDate())
+      .padStart(2, "0");
+
+  return `${y}-${m}-${d}`;
+}
+
+
+function isSameDate(a, b) {
+
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
+}
+
+
+/* =========================================================
+   MONTH VIEW: DELETE A SINGLE HOMEWORK ENTRY
+   ========================================================= */
+
+function deleteHomeworkEntry(dateKey, index) {
+
+  const entries =
+    homeworkData[dateKey];
+
+
+  if (!entries) {
+    return;
+  }
+
+
+  entries.splice(index, 1);
+
+
+  if (!entries.length) {
+
+    delete homeworkData[dateKey];
+  }
+
+
+  saveEvents();
+
+
+  /*
+    If the homework modal happens to be open
+    on this same date, keep its list in sync too.
+  */
+
+  if (
+    homeworkModal.style.display === "flex" &&
+    currentHomeworkDateKey === dateKey
+  ) {
+
+    renderHomeworkList();
+  }
+
+
+  renderMonth();
+}
+
+
+/* =========================================================
+   MONTH VIEW: RENDER
+   ========================================================= */
+
+function renderMonth() {
+
+  monthGrid.innerHTML = "";
+
+
+  const year =
+    monthCursor.getFullYear();
+
+  const month =
+    monthCursor.getMonth();
+
+
+  monthTitle.textContent =
+    monthCursor.toLocaleDateString(
+      undefined,
+      {
+        month: "long",
+        year: "numeric"
+      }
+    );
+
+
+  const firstOfMonth =
+    new Date(year, month, 1);
+
+  const startWeekday =
+    firstOfMonth.getDay();
+
+  const daysInMonth =
+    new Date(year, month + 1, 0)
+      .getDate();
+
+  const today =
+    new Date();
+
+
+  /* Leading blanks so day 1 lands on the right weekday */
+
+  for (
+    let i = 0;
+    i < startWeekday;
+    i++
+  ) {
+
+    const blank =
+      document.createElement("div");
+
+    blank.className =
+      "month-day empty";
+
+    monthGrid.appendChild(blank);
+  }
+
+
+  /* Day cells */
+
+  for (
+    let day = 1;
+    day <= daysInMonth;
+    day++
+  ) {
+
+    const dateObj =
+      new Date(year, month, day);
+
+    const dateKey =
+      formatDateKey(dateObj);
+
+
+    const cell =
+      document.createElement("div");
+
+    cell.className =
+      "month-day" +
+      (
+        isSameDate(dateObj, today)
+          ? " today"
+          : ""
+      );
+
+
+    const numberEl =
+      document.createElement("div");
+
+    numberEl.className =
+      "month-day-number";
+
+    numberEl.textContent =
+      day;
+
+    cell.appendChild(numberEl);
+
+
+    const entries =
+      homeworkData[dateKey] || [];
+
+
+    if (entries.length) {
+
+      const list =
+        document.createElement("div");
+
+      list.className =
+        "month-day-homework";
+
+
+      entries
+        .slice(0, 3)
+        .forEach((entry, index) => {
+
+          const chip =
+            document.createElement("div");
+
+          chip.className =
+            "homework-chip";
+
+
+          const descHTML =
+            entry.description
+              ? `: <span class="homework-chip-desc">${escapeHTML(entry.description)}</span>`
+              : "";
+
+
+          chip.innerHTML =
+            `<strong>${escapeHTML(entry.class)}</strong>${descHTML}`;
+
+
+          const deleteBtn =
+            document.createElement("button");
+
+          deleteBtn.className =
+            "homework-chip-delete";
+
+          deleteBtn.setAttribute(
+            "aria-label",
+            "Delete homework"
+          );
+
+          deleteBtn.textContent =
+            "×";
+
+          deleteBtn.onclick = (e) => {
+
+            e.stopPropagation();
+
+            deleteHomeworkEntry(
+              dateKey,
+              index
+            );
+          };
+
+
+          chip.appendChild(deleteBtn);
+
+          list.appendChild(chip);
+        });
+
+
+      if (entries.length > 3) {
+
+        const more =
+          document.createElement("div");
+
+        more.className =
+          "homework-chip-more";
+
+        more.textContent =
+          `+${entries.length - 3} more`;
+
+        list.appendChild(more);
+      }
+
+
+      cell.appendChild(list);
+    }
+
+
+    cell.onclick = () => {
+
+      openHomeworkModal(
+        dateKey,
+        dateObj
+      );
+    };
+
+
+    monthGrid.appendChild(cell);
+  }
+
+
+  /* Trailing blanks to complete the final row */
+
+  const totalCells =
+    startWeekday + daysInMonth;
+
+  const trailing =
+    (7 - (totalCells % 7)) % 7;
+
+
+  for (
+    let i = 0;
+    i < trailing;
+    i++
+  ) {
+
+    const blank =
+      document.createElement("div");
+
+    blank.className =
+      "month-day empty";
+
+    monthGrid.appendChild(blank);
+  }
+}
+
+
+/* =========================================================
+   HOMEWORK MODAL: CLASS DROPDOWN
+   ========================================================= */
+
+function populateClassDropdown() {
+
+  const previousValue =
+    homeworkClass.value;
+
+  homeworkClass.innerHTML = "";
+
+
+  const names =
+    new Set();
+
+
+  desktopSchedule
+    .querySelectorAll(".event")
+    .forEach(event => {
+
+      names.add(
+        event.dataset.name
+      );
+    });
+
+
+  Object.keys(classColors)
+    .forEach(name => {
+
+      names.add(name);
+    });
+
+
+  if (!names.size) {
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      "";
+
+    option.textContent =
+      "no classes added yet";
+
+    homeworkClass.appendChild(
+      option
+    );
+
+    homeworkClass.disabled =
+      true;
+
+    return;
+  }
+
+
+  homeworkClass.disabled =
+    false;
+
+
+  names.forEach(name => {
+
+    const option =
+      document.createElement("option");
+
+    option.value =
+      name;
+
+    option.textContent =
+      name;
+
+    homeworkClass.appendChild(
+      option
+    );
+  });
+
+
+  if (names.has(previousValue)) {
+
+    homeworkClass.value =
+      previousValue;
+  }
+}
+
+
+/* =========================================================
+   HOMEWORK MODAL: RENDER LIST
+   ========================================================= */
+
+function renderHomeworkList() {
+
+  homeworkList.innerHTML = "";
+
+
+  const entries =
+    homeworkData[currentHomeworkDateKey] || [];
+
+
+  if (!entries.length) {
+
+    const empty =
+      document.createElement("div");
+
+    empty.className =
+      "homework-empty";
+
+    empty.textContent =
+      "No homework added yet.";
+
+    homeworkList.appendChild(empty);
+
+    return;
+  }
+
+
+  entries.forEach((entry, index) => {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "homework-item";
+
+
+    const text =
+      document.createElement("div");
+
+    text.className =
+      "homework-item-text";
+
+    text.innerHTML =
+      `<strong>${escapeHTML(entry.class)}</strong>` +
+      `${escapeHTML(entry.description || "")}`;
+
+
+    const del =
+      document.createElement("button");
+
+    del.className =
+      "homework-item-delete";
+
+    del.setAttribute(
+      "aria-label",
+      "Delete homework"
+    );
+
+    del.textContent =
+      "×";
+
+    del.onclick = () => {
+
+      deleteHomeworkEntry(
+        currentHomeworkDateKey,
+        index
+      );
+
+      renderHomeworkList();
+    };
+
+
+    item.appendChild(text);
+    item.appendChild(del);
+
+    homeworkList.appendChild(item);
+  });
+}
+
+
+/* =========================================================
+   HOMEWORK MODAL: OPEN / CLOSE
+   ========================================================= */
+
+function openHomeworkModal(dateKey, dateObj) {
+
+  currentHomeworkDateKey =
+    dateKey;
+
+  homeworkModalTitle.textContent =
+    "Homework — " +
+    dateObj.toLocaleDateString(
+      undefined,
+      {
+        weekday: "short",
+        month: "short",
+        day: "numeric"
+      }
+    );
+
+  populateClassDropdown();
+
+  renderHomeworkList();
+
+  homeworkDescription.value = "";
+
+  homeworkModal.style.display =
+    "flex";
+}
+
+
+document.getElementById(
+  "homeworkCloseButton"
+).onclick = () => {
+
+  homeworkModal.style.display =
+    "none";
+};
+
+
+document.getElementById(
+  "homeworkAddButton"
+).onclick = () => {
+
+  const className =
+    homeworkClass.value.trim();
+
+  const description =
+    homeworkDescription.value.trim();
+
+
+  if (!className) {
+
+    alert(
+      "Please add a class in class view first, then pick it here."
+    );
+
+    return;
+  }
+
+
+  if (
+    !homeworkData[currentHomeworkDateKey]
+  ) {
+
+    homeworkData[
+      currentHomeworkDateKey
+    ] = [];
+  }
+
+
+  homeworkData[currentHomeworkDateKey]
+    .push({
+      class: className,
+      description
+    });
+
+
+  saveEvents();
+
+  homeworkDescription.value = "";
+
+  renderMonth();
+
+
+  /*
+    Close the modal automatically once the
+    homework has been added.
+  */
+
+  homeworkModal.style.display =
     "none";
 };
 
@@ -2755,7 +4004,7 @@ window.addEventListener(
   "resize",
   () => {
 
-    if (isMobileView()) {
+    if (isMobileView() && isClassViewActive()) {
 
       setMobileDayPosition(
         false,
